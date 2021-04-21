@@ -45,7 +45,7 @@ public class SwipeController : MonoBehaviour
                 float angleY = this.transform.eulerAngles.y + diffMousePos.x * m_swipeTurnSpeed;
 
                 // それぞれの角度をセットする
-                this.transform.eulerAngles = new Vector3(angleX, angleY, 0);
+                this.transform.eulerAngles = new Vector3(0, angleY, 0); //今回はY方向の視点移動を使用しないため、xも0になっている
             }
         }
     }
