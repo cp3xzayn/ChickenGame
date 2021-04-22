@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// PCでもスマホでも使用できる1人称視点のカメラ移動（スマホは視点移動＋プレイヤーの移動）
@@ -13,11 +14,15 @@ public class SwipeController : MonoBehaviour
     [SerializeField] SwipeMode m_swipeMode = SwipeMode.mouse;
     /// <summary> Playerの移動速度 </summary>
     float m_moveSpeed = 2f;
+
+    float m_jumpForce = 500f;
     Rigidbody m_rb;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_jumpButton = GameObject.FindWithTag("JumpButton").GetComponent<Button>();
+        m_jumpButton.onClick.AddListener(() => OnClickJump());
     }
 
     void Update()
@@ -100,6 +105,13 @@ public class SwipeController : MonoBehaviour
         }
     }
 
+    Button m_jumpButton;
+
+    public void OnClickJump()
+    {
+        Debug.Log("a");
+        m_rb.AddForce(transform.up * m_jumpForce, ForceMode.Impulse);
+    }
 
 
     // ↓マウスでの操作（視点操作のみ）

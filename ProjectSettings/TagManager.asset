@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Forward
-  - Back
+  - JumpButton
+  - Object
+  - Panel
   layers:
   - Default
   - TransparentFX
