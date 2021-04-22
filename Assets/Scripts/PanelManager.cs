@@ -24,6 +24,7 @@ public class PanelManager : MonoBehaviour
     void Update()
     {
         m_cubePos = m_objectSetManager.CubePos;
+        Debug.Log(m_cubePos.x);
         if (m_objectSetManager.nowSetPhase == SetPhase.XYSet)
         {
             if (isWhicXYorYZ)
@@ -39,6 +40,7 @@ public class PanelManager : MonoBehaviour
             {
                 LookXYPanel(false);
                 LookYZPanel(true);
+                m_yZPanel.transform.position = new Vector3(m_cubePos.x + 1, 0, 0);
                 isWhicXYorYZ = true;
             }
         }
@@ -52,9 +54,6 @@ public class PanelManager : MonoBehaviour
     public void LookYZPanel(bool isActive)
     {
         m_yZPanel.SetActive(isActive);
-        if (isActive)
-        {
-            m_yZPanel.transform.position = new Vector3(m_cubePos.x + 1, 0, 0);
-        }
+        
     }
 }

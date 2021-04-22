@@ -68,6 +68,7 @@ public class ObjectSetManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
+                Debug.Log("a" + hit.collider.gameObject.tag);
                 if (hit.collider.gameObject.tag == "Object")
                 {
                     isGrabbing = true;
@@ -83,18 +84,28 @@ public class ObjectSetManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (hit.collider.tag == "Panel")　// PanelにRayが当たったとき
+                if (hit.collider.gameObject.tag == "Panel")　// PanelにRayが当たったとき
                 {
-                    Debug.Log(m_grabbingObject.name);
+                    
                     m_grabbingObject.transform.position = hit.point; // Objを移動する
                 }
                 if (Input.GetMouseButtonUp(0)) // 右クリックを離したら
                 {
                     Debug.Log($"Objctを離しました。");
+                    m_cubePos = m_grabbingObject.transform.position;
                     isGrabbing = false;
                 }
             }
         }
+    }
+
+    public void OnClickYZSetPhase()
+    {
+        m_nowSetPhase = SetPhase.YZSet;
+    }
+    public void OnClickEndPhase()
+    {
+        m_nowSetPhase = SetPhase.SetEnd;
     }
 }
 
