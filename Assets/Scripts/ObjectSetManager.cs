@@ -13,6 +13,8 @@ public class ObjectSetManager : MonoBehaviour
     bool isGrabbing = false;
     /// <summary> 掴んでいるオブジェクト </summary>
     GameObject m_grabbingObject;
+    [SerializeField] GameObject m_objectSelectManagerObj = null;
+    ObjectSelectManager m_objectSelectManager;
 
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
@@ -24,27 +26,35 @@ public class ObjectSetManager : MonoBehaviour
          m_nowSetPhase = SetPhase.Initialize;
     }
 
+    void Start()
+    {
+        m_objectSelectManager = m_objectSelectManagerObj.GetComponent<ObjectSelectManager>();
+    }
+
     void Update()
     {
-        switch (m_nowSetPhase)
+        if (GameManager.Instance.NowGameState == GameState.Prepare)
         {
-            case SetPhase.Initialize:
-                Debug.Log("SetPhase.Initialize");
-                InstanceObj();
-                break;
-            case SetPhase.XYSet:
-                Debug.Log("SetPhase.XYSet");
-                SwipeObject();
-                break;
-            case SetPhase.YZSet:
-                Debug.Log("SetPhase.YZSet");
-                SwipeObject();
-                break;
-            case SetPhase.SetEnd:
-                Debug.Log("SetPhase.SetEnd");
-                break;
-            default:
-                break;
+            switch (m_nowSetPhase)
+            {
+                case SetPhase.Initialize:
+                    Debug.Log("SetPhase.Initialize");
+                    InstanceObj();
+                    break;
+                case SetPhase.XYSet:
+                    Debug.Log("SetPhase.XYSet");
+                    SwipeObject();
+                    break;
+                case SetPhase.YZSet:
+                    Debug.Log("SetPhase.YZSet");
+                    SwipeObject();
+                    break;
+                case SetPhase.SetEnd:
+                    Debug.Log("SetPhase.SetEnd");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -53,7 +63,8 @@ public class ObjectSetManager : MonoBehaviour
     /// </summary>
     void InstanceObj()
     {
-        m_object = Resources.Load<GameObject>("Cube");
+        string name = m_objectSelectManager.SelectedObjectName;
+        m_object = Resources.Load<GameObject>(name);
         m_objectPos = Vector3.zero;
         Instantiate(m_object, m_objectPos, Quaternion.identity);
         m_nowSetPhase = SetPhase.XYSet;
@@ -70,7 +81,6 @@ public class ObjectSetManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Debug.Log("a" + hit.collider.gameObject.tag);
                 if (hit.collider.gameObject.tag == "Object")
                 {
                     isGrabbing = true;

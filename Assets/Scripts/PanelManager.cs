@@ -24,10 +24,29 @@ public class PanelManager : MonoBehaviour
         m_objectSetManager = m_objectSetManagerObj.GetComponent<ObjectSetManager>();
     }
 
+    void Update()
+    {
+        switch (GameManager.Instance.NowGameState)
+        {
+            case GameState.Prepare:
+                IndicatePanelsForObjectMove();
+                break;
+            case GameState.Playing:
+                break;
+            case GameState.End:
+                break;
+            default:
+                break;
+        }
+    }
+
     /// <summary> XYかYZのどちらを操作するか決定する（XY:true,YZ:false） </summary>
     bool isWhicXYorYZ = true;
 
-    void Update()
+    /// <summary>
+    /// オブジェクトを動かすことができる範囲を表示するPanelの処理
+    /// </summary>
+    void IndicatePanelsForObjectMove()
     {
         m_objectPos = m_objectSetManager.CubePos;
         if (m_objectSetManager.nowSetPhase == SetPhase.XYSet)
