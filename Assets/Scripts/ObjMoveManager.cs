@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ObjectSetManager : MonoBehaviour
+public class ObjMoveManager : MonoBehaviour
 {
     /// <summary> 生成するオブジェクト </summary>
     GameObject m_object;
@@ -13,8 +13,8 @@ public class ObjectSetManager : MonoBehaviour
     bool isGrabbing = false;
     /// <summary> 掴んでいるオブジェクト </summary>
     GameObject m_grabbingObject;
-    [SerializeField] GameObject m_objectSelectManagerObj = null;
-    ObjectSelectManager m_objectSelectManager;
+    [SerializeField] GameObject m_objSelectManagerObj = null;
+    ObjSelectManager m_objSelectManager;
 
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
@@ -28,7 +28,7 @@ public class ObjectSetManager : MonoBehaviour
 
     void Start()
     {
-        m_objectSelectManager = m_objectSelectManagerObj.GetComponent<ObjectSelectManager>();
+        m_objSelectManager = m_objSelectManagerObj.GetComponent<ObjSelectManager>();
     }
 
     void Update()
@@ -63,7 +63,7 @@ public class ObjectSetManager : MonoBehaviour
     /// </summary>
     void InstanceObj()
     {
-        string name = m_objectSelectManager.SelectedObjectName;
+        string name = m_objSelectManager.SelectedObjectName;
         m_object = Resources.Load<GameObject>(name);
         m_objectPos = Vector3.zero;
         Instantiate(m_object, m_objectPos, Quaternion.identity);

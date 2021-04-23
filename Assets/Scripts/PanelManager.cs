@@ -17,11 +17,11 @@ public class PanelManager : MonoBehaviour
     /// <summary> ObjectSetManagerのアタッチされたオブジェクト </summary>
     [SerializeField] GameObject m_objectSetManagerObj = null;
     /// <summary> ObjectSetManager </summary>
-    ObjectSetManager m_objectSetManager;
+    ObjMoveManager m_objectSetManager;
 
     void Start()
     {
-        m_objectSetManager = m_objectSetManagerObj.GetComponent<ObjectSetManager>();
+        m_objectSetManager = m_objectSetManagerObj.GetComponent<ObjMoveManager>();
     }
 
     void Update()

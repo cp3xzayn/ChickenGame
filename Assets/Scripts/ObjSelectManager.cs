@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectSelectManager : MonoBehaviour
+public class ObjSelectManager : MonoBehaviour
 {
     /// <summary> オブジェクトを選択するためのPanel </summary>
     [SerializeField] GameObject m_selectPanel = null;

@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
                 OnSelectObjectState();
                 break;
             case GameState.Prepare:
+                Debug.Log("GameState.PrepareObject");
+                OnPrepareState();
                 break;
             case GameState.Playing:
                 break;
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary> オブジェクトを選択するためのPanel </summary>
-    [SerializeField] GameObject m_selectPanel = null;
+    [Header("Obj選択パネル"),SerializeField] GameObject m_selectPanel = null;
 
     /// <summary>
     /// GameStateがObjectSelectになったときの処理
@@ -103,5 +105,18 @@ public class GameManager : MonoBehaviour
     void OnSelectObjectState()
     {
         m_selectPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// 固定のオブジェクト
+    /// </summary>
+    [Header("固定オブジェクト"), SerializeField] GameObject m_fixedObjects = null;
+
+    /// <summary>
+    /// GameStateがPrepareになったときの処理
+    /// </summary>
+    void OnPrepareState()
+    {
+        m_fixedObjects.SetActive(true);
     }
 }
