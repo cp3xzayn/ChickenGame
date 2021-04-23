@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     /// <summary> 現在のGameState </summary>
     public GameState NowGameState => m_nowGameState;
 
+    [SerializeField] Camera m_prepareCamera = null;
+    [SerializeField] Camera m_playerCamera = null;
+
     void Awake()
     {
         Instance = this;
@@ -62,6 +65,8 @@ public class GameManager : MonoBehaviour
                 OnPrepareState();
                 break;
             case GameState.Playing:
+                Debug.Log("GameState.Playing");
+                OnPlayingSetting();
                 break;
             case GameState.End:
                 break;
@@ -81,6 +86,8 @@ public class GameManager : MonoBehaviour
     void OnStartState()
     {
         StartCoroutine("StartUIAnimation");
+        CameraSetting(m_prepareCamera, true);
+        CameraSetting(m_playerCamera, false);
     }
 
     /// <summary>
@@ -118,5 +125,28 @@ public class GameManager : MonoBehaviour
     void OnPrepareState()
     {
         m_fixedObjects.SetActive(true);
+    }
+
+    /// <summary> Playerのオブジェクト </summary>
+    [Header("Player"), SerializeField] GameObject m_player = null;
+
+    /// <summary>
+    /// GameStateがPlayingになったときの処理
+    /// </summary>
+    void OnPlayingSetting()
+    {
+        m_player.SetActive(true);
+        CameraSetting(m_prepareCamera, false);
+        CameraSetting(m_playerCamera, true);
+    }
+
+    /// <summary>
+    /// カメラの有効、無効を設定する
+    /// </summary>
+    /// <param name="camera"></param>
+    /// <param name="enable"></param>
+    void CameraSetting(Camera camera, bool enable)
+    {
+        camera.enabled = enable;
     }
 }

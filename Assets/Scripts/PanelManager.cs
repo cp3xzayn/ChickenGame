@@ -32,6 +32,8 @@ public class PanelManager : MonoBehaviour
                 IndicatePanelsForObjectMove();
                 break;
             case GameState.Playing:
+                LookPanel(m_xYPanel, false);
+                LookPanel(m_yZPanel, false);
                 break;
             case GameState.End:
                 break;

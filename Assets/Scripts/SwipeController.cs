@@ -21,8 +21,8 @@ public class SwipeController : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
-        m_jumpButton = GameObject.FindWithTag("JumpButton").GetComponent<Button>();
-        m_jumpButton.onClick.AddListener(() => OnClickJump());
+        //m_jumpButton = GameObject.FindWithTag("JumpButton").GetComponent<Button>();
+        //m_jumpButton.onClick.AddListener(() => OnClickJump());
     }
 
     void Update()
@@ -105,13 +105,13 @@ public class SwipeController : MonoBehaviour
         }
     }
 
-    Button m_jumpButton;
+    //Button m_jumpButton;
 
-    public void OnClickJump()
-    {
-        Debug.Log("a");
-        m_rb.AddForce(transform.up * m_jumpForce, ForceMode.Impulse);
-    }
+    //public void OnClickJump()
+    //{
+    //    Debug.Log("a");
+    //    m_rb.AddForce(transform.up * m_jumpForce, ForceMode.Impulse);
+    //}
 
 
     // ↓マウスでの操作（視点操作のみ）

@@ -51,6 +51,7 @@ public class ObjMoveManager : MonoBehaviour
                     break;
                 case SetPhase.SetEnd:
                     Debug.Log("SetPhase.SetEnd");
+                    GameManager.Instance.SetNowState(GameState.Playing);
                     break;
                 default:
                     break;
@@ -133,6 +134,7 @@ public class ObjMoveManager : MonoBehaviour
     {
         m_nowSetPhase = SetPhase.SetEnd;
     }
+
 }
 
 /// <summary>
