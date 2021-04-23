@@ -4,17 +4,19 @@ using UnityEngine.UI;
 public class ObjectSetManager : MonoBehaviour
 {
     /// <summary> 生成するオブジェクト </summary>
-    GameObject m_cube;
+    GameObject m_object;
     /// <summary> オブジェクトのポジション </summary>
-    private Vector3 m_cubePos;
-    public Vector3 CubePos => m_cubePos;
+    private Vector3 m_objectPos;
+    /// <summary> オブジェクトのポジション </summary>
+    public Vector3 CubePos => m_objectPos;
     /// <summary> オブジェクトをつかんでいるか判断する </summary>
     bool isGrabbing = false;
     /// <summary> 掴んでいるオブジェクト </summary>
     GameObject m_grabbingObject;
 
+    /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
-
+    /// <summary> 現在のSetPhaseの状態 </summary>
     public SetPhase nowSetPhase => m_nowSetPhase;
 
     void Awake()
@@ -51,9 +53,9 @@ public class ObjectSetManager : MonoBehaviour
     /// </summary>
     void InstanceObj()
     {
-        m_cube = Resources.Load<GameObject>("Cube");
-        m_cubePos = Vector3.zero;
-        Instantiate(m_cube, m_cubePos, Quaternion.identity);
+        m_object = Resources.Load<GameObject>("Cube");
+        m_objectPos = Vector3.zero;
+        Instantiate(m_object, m_objectPos, Quaternion.identity);
         m_nowSetPhase = SetPhase.XYSet;
     }
 
@@ -86,19 +88,33 @@ public class ObjectSetManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "Panel")　// PanelにRayが当たったとき
                 {
+                    if (m_nowSetPhase == SetPhase.XYSet)
+                    {
+                        // Rayが当たったポジションとObjectの幅の半分から設置位置を決定している
+                        // TODO:オブジェクトの幅を取得し、-0.5fのところを変数にしたい。
+                        m_grabbingObject.transform.position 
+                            = new Vector3(hit.point.x, hit.point.y, hit.point.z - 0.5f); 
+                    }
+                    else if (m_nowSetPhase == SetPhase.YZSet)
+                    {
+                        // Rayが当たったポジションとObjectの幅の半分から設置位置を決定している
+                        // TODO:オブジェクトの幅を取得し、-0.5fのところを変数にしたい。
+                        m_grabbingObject.transform.position
+                            = new Vector3(hit.point.x - 0.5f, hit.point.y, hit.point.z); 
+                    }
                     
-                    m_grabbingObject.transform.position = hit.point; // Objを移動する
                 }
                 if (Input.GetMouseButtonUp(0)) // 右クリックを離したら
                 {
                     Debug.Log($"Objctを離しました。");
-                    m_cubePos = m_grabbingObject.transform.position;
+                    m_objectPos = m_grabbingObject.transform.position;
                     isGrabbing = false;
                 }
             }
         }
     }
 
+    // 以下ボタンの処理
     public void OnClickYZSetPhase()
     {
         m_nowSetPhase = SetPhase.YZSet;
@@ -109,10 +125,17 @@ public class ObjectSetManager : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Objectを設置する時の状態
+/// </summary>
 public enum SetPhase
 {
+    /// <summary> 初期化時 </summary>
     Initialize,
+    /// <summary> XY平面での座標決定 </summary>
     XYSet,
+    /// <summary> YZ平面での座標決定 </summary>
     YZSet,
+    /// <summary> 設置完了時 </summary>
     SetEnd
 }
