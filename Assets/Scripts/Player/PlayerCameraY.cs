@@ -4,7 +4,20 @@ public class PlayerCameraY : MonoBehaviour
 {
     void Update()
     {
-        PlayerLookVertical();
+        if (Application.isEditor)
+        {
+            PlayerLookVerticalOnEditor();
+        }
+    }
+
+    /// <summary> スマホをSwipeしたときの回転スピード </summary>
+    // [SerializeField] float m_swipeTurnSpeed = 0.1f;
+
+    /// <summary>
+    /// Playerの縦の視点移動（スマホ）
+    /// </summary>
+    public void PlayerLookVertical(Touch touch)
+    {
     }
 
     /// <summary> 視点移動の感度 </summary>
@@ -13,7 +26,7 @@ public class PlayerCameraY : MonoBehaviour
     /// <summary>
     /// Playerの縦の視点を移動する
     /// </summary>
-    void PlayerLookVertical()
+    void PlayerLookVerticalOnEditor()
     {
         float yMouse = Input.GetAxis("Mouse Y");
         Vector3 newRotation = transform.localEulerAngles;

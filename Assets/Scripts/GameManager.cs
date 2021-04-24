@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
     /// <summary> 現在のGameState </summary>
     public GameState NowGameState => m_nowGameState;
 
+    /// <summary> 準備フェーズのカメラ </summary>
     [SerializeField] Camera m_prepareCamera = null;
+    /// <summary> Playerの視点の噛めた </summary>
     [SerializeField] Camera m_playerCamera = null;
 
     void Awake()
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 Debug.Log("GameState.Playing");
-                OnPlayingSetting();
+                OnPlayingState();
                 break;
             case GameState.End:
                 break;
@@ -75,14 +77,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     /// <summary> GameStartTextのオブジェクト </summary>
     [SerializeField] GameObject m_gameStartTextObj = null;
     /// <summary> 表示する秒数 </summary>
     float m_indicateTime = 2f;
     
-    /// <summary>
-    /// GameStateがStartになったときの処理
-    /// </summary>
+    /// <summary> GameStateがStartになったときの処理 </summary>
     void OnStartState()
     {
         StartCoroutine("StartUIAnimation");
@@ -106,45 +107,48 @@ public class GameManager : MonoBehaviour
     /// <summary> オブジェクトを選択するためのPanel </summary>
     [Header("Obj選択パネル"),SerializeField] GameObject m_selectPanel = null;
 
-    /// <summary>
-    /// GameStateがObjectSelectになったときの処理
-    /// </summary>
+    /// <summary> GameStateがObjectSelectになったときの処理 </summary>
     void OnSelectObjectState()
     {
         m_selectPanel.SetActive(true);
     }
 
-    /// <summary>
-    /// 固定のオブジェクト
-    /// </summary>
+
+    /// <summary> 固定のオブジェクト </summary>
     [Header("固定オブジェクト"), SerializeField] GameObject m_fixedObjects = null;
 
-    /// <summary>
-    /// GameStateがPrepareになったときの処理
-    /// </summary>
+    /// <summary> GameStateがPrepareになったときの処理 </summary>
     void OnPrepareState()
     {
         m_fixedObjects.SetActive(true);
     }
 
+
     /// <summary> Playerのオブジェクト </summary>
     [Header("Player"), SerializeField] GameObject m_player = null;
+    /// <summary> Joystick </summary>
+    [Header("JoyStick"), SerializeField] GameObject m_joystick = null;
+    /// <summary> Canvas </summary>
+    [SerializeField] GameObject m_canvas = null;
+    /// <summary> 生成するJumpButton </summary>
+    [SerializeField] GameObject m_jumpButton = null;
 
-    /// <summary>
-    /// GameStateがPlayingになったときの処理
-    /// </summary>
-    void OnPlayingSetting()
+    /// <summary> GameStateがPlayingになったときの処理 </summary>
+    void OnPlayingState()
     {
         m_player.SetActive(true);
+        m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
         CameraSetting(m_playerCamera, true);
+        GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
+        jumpButton.transform.SetParent(m_canvas.transform, false);
     }
 
     /// <summary>
     /// カメラの有効、無効を設定する
     /// </summary>
-    /// <param name="camera"></param>
-    /// <param name="enable"></param>
+    /// <param name="camera"> Camera </param>
+    /// <param name="enable"> true:有効、false:無効</param>
     void CameraSetting(Camera camera, bool enable)
     {
         camera.enabled = enable;
