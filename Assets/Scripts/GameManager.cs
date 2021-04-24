@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
     /// <summary> 現在のGameState </summary>
     public GameState NowGameState => m_nowGameState;
 
+    /// <summary> 準備フェーズのカメラ </summary>
     [SerializeField] Camera m_prepareCamera = null;
+    /// <summary> Playerの視点の噛めた </summary>
     [SerializeField] Camera m_playerCamera = null;
 
     void Awake()
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     /// <summary> GameStartTextのオブジェクト </summary>
     [SerializeField] GameObject m_gameStartTextObj = null;
     /// <summary> 表示する秒数 </summary>
@@ -110,6 +113,7 @@ public class GameManager : MonoBehaviour
         m_selectPanel.SetActive(true);
     }
 
+
     /// <summary> 固定のオブジェクト </summary>
     [Header("固定オブジェクト"), SerializeField] GameObject m_fixedObjects = null;
 
@@ -119,9 +123,15 @@ public class GameManager : MonoBehaviour
         m_fixedObjects.SetActive(true);
     }
 
+
     /// <summary> Playerのオブジェクト </summary>
     [Header("Player"), SerializeField] GameObject m_player = null;
+    /// <summary> Joystick </summary>
     [Header("JoyStick"), SerializeField] GameObject m_joystick = null;
+    /// <summary> Canvas </summary>
+    [SerializeField] GameObject m_canvas = null;
+    /// <summary> 生成するJumpButton </summary>
+    [SerializeField] GameObject m_jumpButton = null;
 
     /// <summary> GameStateがPlayingになったときの処理 </summary>
     void OnPlayingState()
@@ -130,13 +140,15 @@ public class GameManager : MonoBehaviour
         m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
         CameraSetting(m_playerCamera, true);
+        GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
+        jumpButton.transform.SetParent(m_canvas.transform, false);
     }
 
     /// <summary>
     /// カメラの有効、無効を設定する
     /// </summary>
-    /// <param name="camera"></param>
-    /// <param name="enable"></param>
+    /// <param name="camera"> Camera </param>
+    /// <param name="enable"> true:有効、false:無効</param>
     void CameraSetting(Camera camera, bool enable)
     {
         camera.enabled = enable;

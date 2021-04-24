@@ -8,6 +8,10 @@ public class PanelManager : MonoBehaviour
     [SerializeField] GameObject m_xYPanel = null;
     /// <summary> YZのパネル </summary>
     [SerializeField] GameObject m_yZPanel = null;
+    /// <summary> XYPanelのZ方向のサイズ </summary>
+    float m_xYPanelSizeZ;
+    /// <summary> YZPanelのX方向のサイズ </summary>
+    float m_yZPanelSizeX;
     /// <summary> オブジェクトのの位置を決定する時に使用しているカメラ </summary>
     [SerializeField] Camera m_camera = null;
 
@@ -23,12 +27,6 @@ public class PanelManager : MonoBehaviour
     [SerializeField] GameObject m_objSelectManagerObj = null;
     /// <summary> ObjSelectManager </summary>
     ObjSelectManager m_objSelectManager;
-
-
-    /// <summary> XYPanelのZ方向のサイズ </summary>
-    float m_xYPanelSizeZ;
-    /// <summary> YZPanelのX方向のサイズ </summary>
-    float m_yZPanelSizeX;
 
     void Start()
     {
@@ -47,8 +45,8 @@ public class PanelManager : MonoBehaviour
                 IndicatePanelsForObjectMove();
                 break;
             case GameState.Playing:
-                LookPanel(m_xYPanel, false);
-                LookPanel(m_yZPanel, false);
+                PanelActive(m_xYPanel, false);
+                PanelActive(m_yZPanel, false);
                 break;
             case GameState.End:
                 break;
@@ -73,11 +71,13 @@ public class PanelManager : MonoBehaviour
             if (isWhicXYorYZ)
             {
                 distance = DistanceFromObjToPanel(m_objSelectManager.SelectedObjSize.z, m_xYPanelSizeZ);
-                Debug.Log("a" + distance);
-                LookPanel(m_xYPanel, true);
-                LookPanel(m_yZPanel, false);
+                PanelActive(m_xYPanel, true);
+                PanelActive(m_yZPanel, false);
                 // パネルの位置を調整する
                 m_xYPanel.transform.position = new Vector3(0, 0, m_objectPos.z + distance);
+
+                m_camera.transform.position = new Vector3(0, 0, m_objectPos.z -10);
+                m_camera.transform.rotation = Quaternion.Euler(0, 0, 0);
                 isWhicXYorYZ = false;
             }
         }
@@ -86,8 +86,8 @@ public class PanelManager : MonoBehaviour
             if (!isWhicXYorYZ)
             {
                 distance = DistanceFromObjToPanel(m_objSelectManager.SelectedObjSize.x, m_yZPanelSizeX);
-                LookPanel(m_xYPanel, false);
-                LookPanel(m_yZPanel, true);
+                PanelActive(m_xYPanel, false);
+                PanelActive(m_yZPanel, true);
                 // パネルの位置を調整する
                 m_yZPanel.transform.position = new Vector3(m_objectPos.x + distance, 0, 0);
 
@@ -99,11 +99,11 @@ public class PanelManager : MonoBehaviour
     }
 
     /// <summary>
-    /// オブジェクトのアクティブを変更する
+    /// Panelのアクティブを変更する
     /// </summary>
     /// <param name="panel"></param>
     /// <param name="isActive"></param>
-    public void LookPanel(GameObject panel,bool isActive)
+    public void PanelActive (GameObject panel,bool isActive)
     {
         panel.SetActive(isActive);
     }

@@ -13,8 +13,16 @@ public class ObjMoveManager : MonoBehaviour
     bool isGrabbing = false;
     /// <summary> 掴んでいるオブジェクト </summary>
     GameObject m_grabbingObject;
+    /// <summary> 掴んでいるオブジェクトのサイズ </summary>
+    Vector3 m_grabbingObjSize;
+
+    /// <summary> ObjSelectManagerがアタッチされているオブジェクト </summary>
     [SerializeField] GameObject m_objSelectManagerObj = null;
+    /// <summary> ObjSelectManager </summary>
     ObjSelectManager m_objSelectManager;
+
+    /// <summary> SetPhaseを変更するButton </summary>
+    [SerializeField] GameObject m_setPhaseButtons = null;
 
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
@@ -68,6 +76,7 @@ public class ObjMoveManager : MonoBehaviour
         m_object = Resources.Load<GameObject>(name);
         m_objectPos = Vector3.zero;
         Instantiate(m_object, m_objectPos, Quaternion.identity);
+        m_setPhaseButtons.SetActive(true);
         m_nowSetPhase = SetPhase.XYSet;
     }
 
@@ -102,16 +111,15 @@ public class ObjMoveManager : MonoBehaviour
                     if (m_nowSetPhase == SetPhase.XYSet)
                     {
                         // Rayが当たったポジションとObjectの幅の半分から設置位置を決定している
-                        // TODO:オブジェクトの幅を取得し、-0.5fのところを変数にしたい。
+                        // ObjectSize(m_grabbingObject).z /2 はオブジェクトの幅から半径を取得している。
                         m_grabbingObject.transform.position 
-                            = new Vector3(hit.point.x, hit.point.y, hit.point.z - 0.5f); 
+                            = new Vector3(hit.point.x, hit.point.y, hit.point.z - ObjectSize(m_grabbingObject).z /2); 
                     }
                     else if (m_nowSetPhase == SetPhase.YZSet)
                     {
                         // Rayが当たったポジションとObjectの幅の半分から設置位置を決定している
-                        // TODO:オブジェクトの幅を取得し、-0.5fのところを変数にしたい。
                         m_grabbingObject.transform.position
-                            = new Vector3(hit.point.x - 0.5f, hit.point.y, hit.point.z); 
+                            = new Vector3(hit.point.x - ObjectSize(m_grabbingObject).x / 2, hit.point.y, hit.point.z); 
                     }
                     
                 }
@@ -125,7 +133,25 @@ public class ObjMoveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 掴んでいるオブジェクトの幅を取得し返す
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <returns></returns>
+    Vector3 ObjectSize(GameObject gameObject)
+    {
+        MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+        Bounds bounds = mesh.bounds;
+        m_grabbingObjSize = bounds.size;
+        return m_grabbingObjSize;
+    }
+
+
     // 以下ボタンの処理
+    public void OnClickXYSetPhase()
+    {
+        m_nowSetPhase = SetPhase.XYSet;
+    }
     public void OnClickYZSetPhase()
     {
         m_nowSetPhase = SetPhase.YZSet;
@@ -133,6 +159,7 @@ public class ObjMoveManager : MonoBehaviour
     public void OnClickEndPhase()
     {
         m_nowSetPhase = SetPhase.SetEnd;
+        m_setPhaseButtons.SetActive(false);
     }
 
 }
