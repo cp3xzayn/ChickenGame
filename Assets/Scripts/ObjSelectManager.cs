@@ -12,6 +12,11 @@ public class ObjSelectManager : MonoBehaviour
     /// <summary> 選択されたオブジェクトの名前 </summary>
     public string SelectedObjectName => m_selectedObjectName;
 
+    /// <summary> 選択されたオブジェクトのサイズ </summary>
+    private Vector3 m_selectedObjSize;
+    /// <summary> 選択されたオブジェクトのサイズ </summary>
+    public Vector3 SelectedObjSize => m_selectedObjSize;
+
     void Update()
     {
         SelectObject();
@@ -35,6 +40,12 @@ public class ObjSelectManager : MonoBehaviour
                         Debug.Log("設置するオブジェクトが選択されました。");
                         m_selectedObjectName = hit.collider.gameObject.name;
                         m_selectPanel.SetActive(false);
+
+                        // 選択されたオブジェクトのサイズを取得する
+                        MeshRenderer mesh = hit.collider.gameObject.GetComponent<MeshRenderer>();
+                        Bounds bounds = mesh.bounds;
+                        m_selectedObjSize = bounds.size;
+
                         GameManager.Instance.SetNowState(GameState.Prepare);
                     }
                 }

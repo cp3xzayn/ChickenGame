@@ -9,6 +9,7 @@ TagManager:
   - Panel
   - FallPos
   - Goal
+  - FixedObject
   layers:
   - Default
   - TransparentFX

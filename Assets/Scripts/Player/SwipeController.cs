@@ -42,12 +42,13 @@ public class SwipeController : MonoBehaviour
 
     /// <summary> スマホをSwipeしたときの回転スピード </summary>
     [Header("スマホでの視点回転スピード") ,SerializeField] float m_swipeTurnSpeed = 0.1f;
-    /// <summary> Playerの移動速度 </summary>
-    [Header("スマホでの移動速度") ,SerializeField] float m_moveSpeed = 5f;
     /// <summary> 最初にタッチされた座標 </summary>
     Vector3 startTouchPos;
     /// <summary> ButtonのGameObject </summary>
     GameObject m_jumpButton = null;
+
+    /// <summary> Joystick </summary>
+    [SerializeField] FixedJoystick m_fixedJoystick = null;
 
     /// <summary>
     /// スマホ画面のタッチでの視点移動+Playerの移動
@@ -90,28 +91,21 @@ public class SwipeController : MonoBehaviour
         }
         if (touch.position.x < Screen.width / 2)
         {
-            // タッチされたとき
-            if (touch.phase == TouchPhase.Began)
+            // Joystickから入力された値
+            float h = m_fixedJoystick.Horizontal;
+            float v = m_fixedJoystick.Vertical;
+            // 入力された値を組み立てる
+            Vector3 dir = transform.forward * v + transform.right * h;
+            if (dir == Vector3.zero)
             {
-                // 初期化する
-                startTouchPos = touch.position;
+                // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
+                m_rb.velocity = new Vector3(0f, m_rb.velocity.y, 0f);
             }
-            // タッチが継続的に続いているとき
-            if (touch.phase == TouchPhase.Stationary)
+            else
             {
-                Vector3 nowTouchPos = touch.position; // 現在のタッチしている座標
-                // 差分を単位ベクトルにする
-                Vector3 diffPosNormalized = (nowTouchPos - startTouchPos).normalized;
-                if (diffPosNormalized == Vector3.zero)
-                {
-                    m_rb.velocity = new Vector3(0, m_rb.velocity.y, 0);
-                }
-                else
-                {
-                    Vector3 velo = transform.forward * diffPosNormalized.y * m_moveSpeed; // 入力した方向に移動する
-                    velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
-                    m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
-                }
+                Vector3 velo = dir * m_movingSpeed; // 入力した方向に移動する
+                velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
+                m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
             }
         }
     }
@@ -128,6 +122,7 @@ public class SwipeController : MonoBehaviour
     bool isJump = true;
     /// <summary> 視点移動の感度 </summary>
     [Header("マウス感度（視点移動）"), SerializeField] float m_sensitivity = 3f;
+
 
     /// <summary>
     /// Editor上でのPlayerの移動
@@ -191,10 +186,18 @@ public class SwipeController : MonoBehaviour
         {
             isJump = true;
         }
+        if (col.gameObject.tag == "FixedObject")
+        {
+            isJump = true;
+        }
         if (col.gameObject.tag == "FallPos")
         {
             this.transform.position = m_startPos;
-            
+        }
+
+        if (col.gameObject.tag == "Goal")
+        {
+            Debug.Log("Goal");
         }
     }
 }
