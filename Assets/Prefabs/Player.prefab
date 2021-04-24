@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 2275192795213459754}
   - component: {fileID: 6347336009359344973}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: PlayerCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,9 +151,9 @@ GameObject:
   - component: {fileID: 6439719400741174788}
   - component: {fileID: 6439719400741174789}
   - component: {fileID: 6439719400741174842}
-  - component: {fileID: 6439719400741174843}
+  - component: {fileID: -3080743310231502678}
   m_Layer: 0
-  m_Name: PlayerPC
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,7 +252,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &6439719400741174843
+--- !u!114 &-3080743310231502678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,10 +261,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6439719400741174840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47a7c69432246cc429777e66a484c1f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9403733ca2a355c4eb35c3e67d15e6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_movingSpeed: 3
+  m_swipeTurnSpeed: 0.1
+  m_moveSpeed: 2
+  m_playerCamera: {fileID: 6439719401618037768}
+  m_movingSpeed: 5
   m_jumpPower: 5
   m_sensitivity: 3
 --- !u!1 &6439719401618037774
