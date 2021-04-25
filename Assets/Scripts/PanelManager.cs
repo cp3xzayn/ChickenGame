@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// オブジェクトが移動できる範囲を示すPanelの挙動を管理するクラス
+/// </summary>
 public class PanelManager : MonoBehaviour
 {
     /// <summary> XYのパネル </summary>
@@ -123,8 +126,8 @@ public class PanelManager : MonoBehaviour
     /// <summary>
     /// ObjとPnaelの距離を計算し返す
     /// </summary>
-    /// <param name="selectObjSize"></param>
-    /// <param name="panelSize"></param>
+    /// <param name="selectObjSize">選択されたオブジェクトのサイズ</param>
+    /// <param name="panelSize">パネルの厚さ</param>
     /// <returns></returns>
     float DistanceFromObjToPanel(float selectObjSize, float panelSize)
     {

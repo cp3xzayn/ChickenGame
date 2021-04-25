@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Playerが設定した設定を保持するクラス
+/// </summary>
 public class PlayerSetting
 {
     /// <summary> 水平方向の感度 </summary>
@@ -20,5 +23,14 @@ public class PlayerSetting
     {
         set { m_ySensitivity = value; }
         get { return m_ySensitivity; }
+    }
+
+    /// <summary> BGMの音量 </summary>
+    private static float m_bGMVolume;
+    /// <summary> BGMの音量 </summary>
+    public static float BGMVolume
+    {
+        set { m_bGMVolume = value; }
+        get { return m_bGMVolume; }
     }
 }
