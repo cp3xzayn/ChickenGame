@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 /// PCでもスマホでも使用できる1人称視点のカメラ移動（スマホは視点移動＋プレイヤーの移動）
@@ -10,15 +11,20 @@ public class SwipeController : MonoBehaviour
 {
     /// <summary> Playerの初期ポジション </summary>
     Vector3 m_startPos;
-    //Vector3 m_startRot;
     /// <summary> RigidBody </summary>
     Rigidbody m_rb;
+    /// <summary> PlayerCameraのゲームオブジェクト </summary>
+    [SerializeField] GameObject m_playerCamera = null;
+    /// <summary> PlayerCameraY </summary>
+    PlayerCameraY m_playerCameraY;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
-        //m_startRot = this.transform.localEulerAngles;
+
+        m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
+
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
         m_jump.onClick.AddListener(() => Jump());
@@ -26,6 +32,7 @@ public class SwipeController : MonoBehaviour
 
     void Update()
     {
+        // editor上かスマホかで挙動を変える
         if (Application.isEditor)
         {
             PlayerMoveOnEditor();
@@ -43,7 +50,7 @@ public class SwipeController : MonoBehaviour
     /// <summary> スマホをSwipeしたときの回転スピード </summary>
     [Header("スマホでの視点回転スピード") ,SerializeField] float m_swipeTurnSpeed = 0.1f;
     /// <summary> 最初にタッチされた座標 </summary>
-    Vector3 startTouchPos;
+    Vector3 m_startTouchPos;
     /// <summary> ButtonのGameObject </summary>
     GameObject m_jumpButton = null;
 
@@ -88,6 +95,8 @@ public class SwipeController : MonoBehaviour
             float angleY = this.transform.eulerAngles.y + x * m_swipeTurnSpeed;
             // 移動する角度をセットする
             this.transform.eulerAngles = new Vector3(0, angleY, 0);
+
+            m_playerCameraY.PlayerLookVertical(touch);
         }
         if (touch.position.x < Screen.width / 2)
         {
@@ -111,17 +120,16 @@ public class SwipeController : MonoBehaviour
     }
 
 
-
     /*--------------------------------------------------------------------------------------*/
     // ↓Editor上での操作
     /// <summary> 移動速度 </summary>
     [Header("Editor上での移動速度") ,SerializeField] float m_movingSpeed = 5f;
     /// <summary> Jumpするときの力 </summary>
     [Header("Editor上でのジャンプ力") ,SerializeField] float m_jumpPower = 5f;
-    /// <summary> Jumpされたかどうか判定 </summary>
-    bool isJump = true;
     /// <summary> 視点移動の感度 </summary>
     [Header("マウス感度（視点移動）"), SerializeField] float m_sensitivity = 3f;
+    /// <summary> Jumpされたかどうか判定 </summary>
+    bool isJump = true;
 
 
     /// <summary>

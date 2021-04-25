@@ -11,13 +11,18 @@ public class PlayerCameraY : MonoBehaviour
     }
 
     /// <summary> スマホをSwipeしたときの回転スピード </summary>
-    // [SerializeField] float m_swipeTurnSpeed = 0.1f;
+    [Header("スマホでの視点回転スピード"), SerializeField] float m_swipeTurnSpeed = 0.1f;
 
     /// <summary>
     /// Playerの縦の視点移動（スマホ）
     /// </summary>
     public void PlayerLookVertical(Touch touch)
     {
+        float y = touch.deltaPosition.y; // 偏差分を求める
+        // 左右に視点変更する時の角度
+        float angleX = this.transform.eulerAngles.x - y * m_swipeTurnSpeed;
+        // 移動する角度をセットする
+        this.transform.localEulerAngles = new Vector3(angleX, 0, 0);
     }
 
     /// <summary> 視点移動の感度 </summary>

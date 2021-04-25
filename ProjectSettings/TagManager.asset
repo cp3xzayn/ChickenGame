@@ -10,6 +10,7 @@ TagManager:
   - FallPos
   - Goal
   - FixedObject
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX

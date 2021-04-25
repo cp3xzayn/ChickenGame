@@ -3346,6 +3346,11 @@ PrefabInstance:
       propertyPath: m_fixedJoystick
       value: 
       objectReference: {fileID: 2929252283882492584}
+    - target: {fileID: 5790987016973609499, guid: 9714ab640867c8d45bcfb6cbee7e6012,
+        type: 3}
+      propertyPath: m_TagString
+      value: PlayerCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 6439719400741174790, guid: 9714ab640867c8d45bcfb6cbee7e6012,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3411,7 +3416,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6859447843756084611, guid: 9714ab640867c8d45bcfb6cbee7e6012, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9714ab640867c8d45bcfb6cbee7e6012, type: 3}
 --- !u!43 &852491325
 Mesh:
