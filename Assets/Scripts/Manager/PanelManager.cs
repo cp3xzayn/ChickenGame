@@ -21,20 +21,15 @@ public class PanelManager : MonoBehaviour
     /// <summary> 掴んでるオブジェクトのポジション </summary>
     Vector3 m_objectPos;
 
-    /// <summary> ObjSetManagerのアタッチされたオブジェクト </summary>
-    [SerializeField] GameObject m_objMoveManagerObj = null;
     /// <summary> ObjSetManager </summary>
     ObjMoveManager m_objMoveManager;
-
-    /// <summary> ObjSelectManagerのアタッチされたオブジェクト </summary>
-    [SerializeField] GameObject m_objSelectManagerObj = null;
     /// <summary> ObjSelectManager </summary>
     ObjSelectManager m_objSelectManager;
 
     void Start()
     {
-        m_objMoveManager = m_objMoveManagerObj.GetComponent<ObjMoveManager>();
-        m_objSelectManager = m_objSelectManagerObj.GetComponent<ObjSelectManager>();
+        m_objMoveManager = GetComponent<ObjMoveManager>();
+        m_objSelectManager = GetComponent<ObjSelectManager>();
         // それぞれのPanelのサイズを初期化する
         m_xYPanelSizeZ = GetPanelSize(m_xYPanel).z;
         m_yZPanelSizeX = GetPanelSize(m_yZPanel).x;

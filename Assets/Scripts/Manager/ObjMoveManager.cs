@@ -16,8 +16,6 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary> 掴んでいるオブジェクトのサイズ </summary>
     Vector3 m_grabbingObjSize;
 
-    /// <summary> ObjSelectManagerがアタッチされているオブジェクト </summary>
-    [SerializeField] GameObject m_objSelectManagerObj = null;
     /// <summary> ObjSelectManager </summary>
     ObjSelectManager m_objSelectManager;
 
@@ -36,7 +34,7 @@ public class ObjMoveManager : MonoBehaviour
 
     void Start()
     {
-        m_objSelectManager = m_objSelectManagerObj.GetComponent<ObjSelectManager>();
+        m_objSelectManager = GetComponent<ObjSelectManager>();
     }
 
     void Update()
