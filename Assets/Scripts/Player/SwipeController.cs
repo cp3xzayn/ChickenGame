@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// PCでもスマホでも使用できる1人称視点のカメラ移動（スマホは視点移動＋プレイヤーの移動）
+/// PCでもスマホでも使用できる1人称視点のPlayerの挙動（垂直方向のカメラの管理はPlayerCameraYで管理している）
 /// </summary>
 public class SwipeController : MonoBehaviour
 {
@@ -22,6 +22,7 @@ public class SwipeController : MonoBehaviour
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
+        // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
         m_jump.onClick.AddListener(() => Jump());
@@ -52,7 +53,7 @@ public class SwipeController : MonoBehaviour
     GameObject m_jumpButton = null;
 
     /// <summary> Joystick </summary>
-    [SerializeField] FixedJoystick m_fixedJoystick = null;
+    [Header("JoyStick") ,SerializeField] FixedJoystick m_fixedJoystick = null;
 
     /// <summary>
     /// スマホ画面のタッチでの視点移動+Playerの移動

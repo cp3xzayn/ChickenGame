@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 垂直方向のカメラの視点移動を管理するクラス
+/// </summary>
 public class PlayerCameraY : MonoBehaviour
 {
     void Update()
     {
+        // Editor上で実行したとき
         if (Application.isEditor)
         {
             PlayerLookVerticalOnEditor();
         }
     }
 
-    /// <summary> スマホをSwipeしたときの回転スピード </summary>
+    /// <summary> スマホをSwipeしたときの視点移動感度 </summary>
     [Header("スマホでの視点回転スピード"), SerializeField] float m_ySensitivity = 0.1f;
 
     /// <summary>
-    /// Playerの縦の視点移動（スマホ）
+    /// Playerの垂直方向の視点移動（スマホ）
     /// </summary>
     public void PlayerLookVertical(Touch touch)
     {

@@ -74,8 +74,11 @@ public class PanelManager : MonoBehaviour
                 // パネルの位置を調整する
                 m_xYPanel.transform.position = new Vector3(0, 0, m_objectPos.z + distance);
 
-                m_camera.transform.position = new Vector3(0, 0, m_objectPos.z -10);
+                //　カメラの位置、向いてる方向を変える
+                //　カメラを選択されたオブジェクトから距離10離すために-10している
+                m_camera.transform.position = new Vector3(0, 0, m_objectPos.z -10); 
                 m_camera.transform.rotation = Quaternion.Euler(0, 0, 0);
+
                 isWhicXYorYZ = false;
             }
         }
@@ -89,8 +92,11 @@ public class PanelManager : MonoBehaviour
                 // パネルの位置を調整する
                 m_yZPanel.transform.position = new Vector3(m_objectPos.x + distance, 0, 0);
 
+                //　カメラの位置、向いてる方向を変える
+                //　カメラを選択されたオブジェクトから距離10離すために-10している
                 m_camera.transform.position = new Vector3(m_objectPos.x - 10, 0, 0);
                 m_camera.transform.rotation = Quaternion.Euler(0, 90, 0);
+
                 isWhicXYorYZ = true;
             }
         }
@@ -109,6 +115,8 @@ public class PanelManager : MonoBehaviour
     /// <summary>
     /// Panelの奥行きのサイズを取得する
     /// </summary>
+    /// <param name="panel">サイズを取得するGameObject</param>
+    /// <returns>取得したオブジェクトのサイズ</returns>
     Vector3 GetPanelSize(GameObject panel)
     {
         MeshRenderer mesh = panel.GetComponent<MeshRenderer>();
