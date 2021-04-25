@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 /// <summary>
 /// PCでもスマホでも使用できる1人称視点のカメラ移動（スマホは視点移動＋プレイヤーの移動）
@@ -22,9 +21,7 @@ public class SwipeController : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
-
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
-
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
         m_jump.onClick.AddListener(() => Jump());
@@ -47,8 +44,8 @@ public class SwipeController : MonoBehaviour
     /*-----------------------------------------------------------------------------------*/
     // ↓スマホでの視点操作+Playerの移動
 
-    /// <summary> スマホをSwipeしたときの回転スピード </summary>
-    [Header("スマホでの視点回転スピード") ,SerializeField] float m_swipeTurnSpeed = 0.1f;
+    /// <summary> スマホをSwipeしたときの水平感度 </summary>
+    [Header("水平感度(Phone)") ,SerializeField] float m_xSensitivity = 0.1f;
     /// <summary> 最初にタッチされた座標 </summary>
     Vector3 m_startTouchPos;
     /// <summary> ButtonのGameObject </summary>
@@ -90,9 +87,10 @@ public class SwipeController : MonoBehaviour
     {
         if (touch.position.x >= Screen.width / 2)
         {
+            m_xSensitivity = PlayerSetting.XSensitivity;
             float x = touch.deltaPosition.x; // 偏差分を求める
             // 左右に視点変更する時の角度
-            float angleY = this.transform.eulerAngles.y + x * m_swipeTurnSpeed;
+            float angleY = this.transform.eulerAngles.y + x * m_xSensitivity;
             // 移動する角度をセットする
             this.transform.eulerAngles = new Vector3(0, angleY, 0);
 
@@ -206,6 +204,7 @@ public class SwipeController : MonoBehaviour
         if (col.gameObject.tag == "Goal")
         {
             Debug.Log("Goal");
+            GameManager.Instance.SetNowState(GameState.GameClear);
         }
     }
 }

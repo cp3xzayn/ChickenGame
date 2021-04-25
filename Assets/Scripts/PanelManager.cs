@@ -48,7 +48,7 @@ public class PanelManager : MonoBehaviour
                 PanelActive(m_xYPanel, false);
                 PanelActive(m_yZPanel, false);
                 break;
-            case GameState.End:
+            case GameState.GameClear:
                 break;
             default:
                 break;

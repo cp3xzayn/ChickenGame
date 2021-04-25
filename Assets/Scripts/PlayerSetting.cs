@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSetting : MonoBehaviour
+public class PlayerSetting
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    /// <summary> 水平方向の感度 </summary>
+    private static float m_xSensitivity;
+    /// <summary> 垂直方向の感度 </summary>
+    private static float m_ySensitivity;
 
-    // Update is called once per frame
-    void Update()
+    /// <summary> 水平方向の感度 </summary>
+    public static float XSensitivity
     {
-        
+        set { m_xSensitivity = value; }
+        get { return m_xSensitivity; }
+    }
+    /// <summary> 垂直方向の感度 </summary>
+    public static float YSensitivity
+    {
+        set { m_ySensitivity = value; }
+        get { return m_ySensitivity; }
     }
 }
