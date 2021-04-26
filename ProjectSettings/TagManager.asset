@@ -12,6 +12,7 @@ TagManager:
   - FixedObject
   - PlayerCamera
   - BaseCanvas
+  - SettingPanel
   layers:
   - Default
   - TransparentFX

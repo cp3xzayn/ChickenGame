@@ -1577,6 +1577,17 @@ MonoBehaviour:
           m_StringArgument: ZoomOut
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 517193635968932000}
+        m_MethodName: OnClickCloseSetting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2420991477457759721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,7 +1960,7 @@ GameObject:
   - component: {fileID: 3773467595706931416}
   m_Layer: 5
   m_Name: SettingCanvas
-  m_TagString: Untagged
+  m_TagString: SettingPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
