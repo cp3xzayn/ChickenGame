@@ -8,9 +8,9 @@ using UnityEngine;
 public class PlayerSetting
 {
     /// <summary> 水平方向の感度 </summary>
-    private static float m_xSensitivity;
+    private static float m_xSensitivity = 0.1f;
     /// <summary> 垂直方向の感度 </summary>
-    private static float m_ySensitivity;
+    private static float m_ySensitivity = 0.1f;
 
     /// <summary> 水平方向の感度 </summary>
     public static float XSensitivity
@@ -26,7 +26,7 @@ public class PlayerSetting
     }
 
     /// <summary> BGMの音量 </summary>
-    private static float m_bGMVolume;
+    private static float m_bGMVolume = 0.1f;
     /// <summary> BGMの音量 </summary>
     public static float BGMVolume
     {
