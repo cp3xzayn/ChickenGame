@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerSetting
 {
     /// <summary>
-    /// 設定のデータ(Json形式)
+    /// 設定のデータ(Json形式)のインスタンス
     /// </summary>
     public static SettingData m_settingData = new SettingData();
 
@@ -30,5 +30,12 @@ public class PlayerSetting
     {
         set { m_settingData.m_bGMVolume = value; }
         get { return m_settingData.m_bGMVolume; }
+    }
+
+    /// <summary> 効果音の音量 </summary>
+    public static float SEVolume
+    {
+        set { m_settingData.m_sEVolume = value; }
+        get { return m_settingData.m_sEVolume; }
     }
 }

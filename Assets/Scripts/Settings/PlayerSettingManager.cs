@@ -23,6 +23,7 @@ public class PlayerSettingManager : MonoBehaviour
             m_settingData.m_xSensitivity = 0.1f;
             m_settingData.m_ySensitivity = 0.1f;
             m_settingData.m_bGMVolume = 0.1f;
+            m_settingData.m_sEVolume = 0.1f;
             FileManager.TextSave(m_textName, JsonUtility.ToJson(m_settingData));
         }
     }
@@ -33,6 +34,8 @@ public class PlayerSettingManager : MonoBehaviour
     [SerializeField] Slider m_vSensitivitySlider = null;
     /// <summary> BGM音量調節のためのSlider </summary>
     [SerializeField] Slider m_bGMVolumeSlider = null;
+    /// <summary> 効果音調節のためのSlider </summary>
+    [SerializeField] Slider m_sEVolumeSlider = null;
     /// <summary> AudioSource </summary>
     AudioSource m_audioSource;
 
@@ -40,10 +43,12 @@ public class PlayerSettingManager : MonoBehaviour
     {
         m_audioSource = GetComponent<AudioSource>();
         Debug.Log(FileManager.GetFilePath(m_textName));
+        
         // Sliedrのvalueを初期化する
         m_hSensitivitySlider.value = LoadSetting.m_xSensitivity;
         m_vSensitivitySlider.value = LoadSetting.m_ySensitivity;
         m_bGMVolumeSlider.value = LoadSetting.m_bGMVolume;
+        m_sEVolumeSlider.value = LoadSetting.m_sEVolume;
     }
 
 
@@ -78,6 +83,14 @@ public class PlayerSettingManager : MonoBehaviour
     }
 
     /// <summary>
+    /// SEの音量を設定する(Sliderが変更されたとき)
+    /// </summary>
+    public void SetSEVolume()
+    {
+        PlayerSetting.SEVolume = m_sEVolumeSlider.value;
+    }
+
+    /// <summary>
     /// 設定画面が閉じられた時
     /// </summary>
     public void OnClickCloseSetting()
@@ -102,7 +115,12 @@ public class PlayerSettingManager : MonoBehaviour
 [Serializable]
 public class SettingData
 {
+    /// <summary> 水平方向感度 </summary>
     public float m_xSensitivity;
+    /// <summary> 垂直方向感度 </summary>
     public float m_ySensitivity;
+    /// <summary> BGMの音量 </summary>
     public float m_bGMVolume;
+    /// <summary> 効果音の音量 </summary>
+    public float m_sEVolume;
 }
