@@ -27,6 +27,7 @@ public class PlayerSettingManager : MonoBehaviour
             m_settingData.m_ySensitivity = 0.1f;
             m_settingData.m_bGMVolume = 0.1f;
             m_settingData.m_sEVolume = 0.1f;
+            m_settingData.isTutorial = true;
             FileManager.TextSave(m_textName, JsonUtility.ToJson(m_settingData));
         }
     }
@@ -39,19 +40,22 @@ public class PlayerSettingManager : MonoBehaviour
     [SerializeField] Slider m_bGMVolumeSlider = null;
     /// <summary> 効果音調節のためのSlider </summary>
     [SerializeField] Slider m_sEVolumeSlider = null;
+    /// <summary> TutorialのOnOffを設定するToggle </summary>
+    [SerializeField] Toggle m_tutorialToggle = null;
     /// <summary> AudioSource </summary>
-    AudioSource m_audioSource;
+    [SerializeField] AudioSource m_audioSource = null;
 
     void Start()
     {
         m_audioSource = GetComponent<AudioSource>();
         Debug.Log(FileManager.GetFilePath(m_textName));
         
-        // Sliedrのvalueを初期化する
+        // Sliedrのvalue、ToggleのOnOffを初期化する
         m_hSensitivitySlider.value = LoadSetting.m_xSensitivity;
         m_vSensitivitySlider.value = LoadSetting.m_ySensitivity;
         m_bGMVolumeSlider.value = LoadSetting.m_bGMVolume;
         m_sEVolumeSlider.value = LoadSetting.m_sEVolume;
+        m_tutorialToggle.isOn = LoadSetting.isTutorial;
     }
 
 
@@ -94,6 +98,14 @@ public class PlayerSettingManager : MonoBehaviour
     }
 
     /// <summary>
+    /// TutorialのOnOffを保存する
+    /// </summary>
+    public void TutorialOnOff()
+    {
+        PlayerSetting.IsTutorial = m_tutorialToggle.isOn;
+    }
+
+    /// <summary>
     /// 設定画面が閉じられた時
     /// </summary>
     public void OnClickCloseSetting()
@@ -126,4 +138,6 @@ public class SettingData
     public float m_bGMVolume;
     /// <summary> 効果音の音量 </summary>
     public float m_sEVolume;
+    /// <summary> チュートリアルの説明のOnOffを決めます </summary>
+    public bool isTutorial;
 }

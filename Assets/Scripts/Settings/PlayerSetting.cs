@@ -38,4 +38,11 @@ public class PlayerSetting
         set { m_settingData.m_sEVolume = value; }
         get { return m_settingData.m_sEVolume; }
     }
+
+    /// <summary> TutorialのOnOffを決める </summary>
+    public static bool IsTutorial
+    {
+        set { m_settingData.isTutorial = value; }
+        get { return m_settingData.isTutorial; }
+    }
 }
