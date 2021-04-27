@@ -4,21 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// PCでもスマホでも使用できる1人称視点のカメラ移動（スマホは視点移動＋プレイヤーの移動）
+/// PCでもスマホでも使用できる1人称視点のPlayerの挙動（垂直方向のカメラの管理はPlayerCameraYで管理している）
 /// </summary>
 public class SwipeController : MonoBehaviour
 {
     /// <summary> Playerの初期ポジション </summary>
     Vector3 m_startPos;
-    //Vector3 m_startRot;
     /// <summary> RigidBody </summary>
     Rigidbody m_rb;
+    /// <summary> PlayerCameraのゲームオブジェクト </summary>
+    [SerializeField] GameObject m_playerCamera = null;
+    /// <summary> PlayerCameraY </summary>
+    PlayerCameraY m_playerCameraY;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
-        //m_startRot = this.transform.localEulerAngles;
+        m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
+        // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
         m_jump.onClick.AddListener(() => Jump());
@@ -26,6 +30,7 @@ public class SwipeController : MonoBehaviour
 
     void Update()
     {
+        // editor上かスマホかで挙動を変える
         if (Application.isEditor)
         {
             PlayerMoveOnEditor();
@@ -40,15 +45,15 @@ public class SwipeController : MonoBehaviour
     /*-----------------------------------------------------------------------------------*/
     // ↓スマホでの視点操作+Playerの移動
 
-    /// <summary> スマホをSwipeしたときの回転スピード </summary>
-    [Header("スマホでの視点回転スピード") ,SerializeField] float m_swipeTurnSpeed = 0.1f;
+    /// <summary> スマホをSwipeしたときの水平感度 </summary>
+    [Header("水平感度(Phone)") ,SerializeField] float m_xSensitivity = 0.1f;
     /// <summary> 最初にタッチされた座標 </summary>
-    Vector3 startTouchPos;
+    Vector3 m_startTouchPos;
     /// <summary> ButtonのGameObject </summary>
     GameObject m_jumpButton = null;
 
     /// <summary> Joystick </summary>
-    [SerializeField] FixedJoystick m_fixedJoystick = null;
+    [Header("JoyStick") ,SerializeField] FixedJoystick m_fixedJoystick = null;
 
     /// <summary>
     /// スマホ画面のタッチでの視点移動+Playerの移動
@@ -58,13 +63,7 @@ public class SwipeController : MonoBehaviour
         Touch touch;
         // タッチされた指の数
         int touchCount = Input.touchCount;
-
-        if (Input.touchCount == 1)
-        {
-            touch = Input.GetTouch(0);
-            BehaviorFromTouch(touch);
-        }
-        if (Input.touchCount == 2)
+        if (Input.touchCount > 0)
         {
             for (int i = 0; i < touchCount; i++)
             {
@@ -83,11 +82,14 @@ public class SwipeController : MonoBehaviour
     {
         if (touch.position.x >= Screen.width / 2)
         {
+            m_xSensitivity = PlayerSetting.XSensitivity;
             float x = touch.deltaPosition.x; // 偏差分を求める
             // 左右に視点変更する時の角度
-            float angleY = this.transform.eulerAngles.y + x * m_swipeTurnSpeed;
+            float angleY = this.transform.eulerAngles.y + x * m_xSensitivity;
             // 移動する角度をセットする
             this.transform.eulerAngles = new Vector3(0, angleY, 0);
+
+            m_playerCameraY.PlayerLookVertical(touch);
         }
         if (touch.position.x < Screen.width / 2)
         {
@@ -111,17 +113,16 @@ public class SwipeController : MonoBehaviour
     }
 
 
-
     /*--------------------------------------------------------------------------------------*/
     // ↓Editor上での操作
     /// <summary> 移動速度 </summary>
     [Header("Editor上での移動速度") ,SerializeField] float m_movingSpeed = 5f;
     /// <summary> Jumpするときの力 </summary>
     [Header("Editor上でのジャンプ力") ,SerializeField] float m_jumpPower = 5f;
-    /// <summary> Jumpされたかどうか判定 </summary>
-    bool isJump = true;
     /// <summary> 視点移動の感度 </summary>
     [Header("マウス感度（視点移動）"), SerializeField] float m_sensitivity = 3f;
+    /// <summary> Jumpされたかどうか判定 </summary>
+    bool isJump = true;
 
 
     /// <summary>
@@ -198,6 +199,7 @@ public class SwipeController : MonoBehaviour
         if (col.gameObject.tag == "Goal")
         {
             Debug.Log("Goal");
+            GameManager.Instance.SetNowState(GameState.GameClear);
         }
     }
 }

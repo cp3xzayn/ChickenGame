@@ -13,7 +13,7 @@ public enum GameState
     /// <summary> ゲームプレイ </summary>
     Playing,
     /// <summary> ゲーム終了 </summary>
-    End
+    GameClear
 }
 
 public class GameManager : MonoBehaviour
@@ -70,7 +70,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameState.Playing");
                 OnPlayingState();
                 break;
-            case GameState.End:
+            case GameState.GameClear:
+                Debug.Log("GameState.GameClear");
+                OnGameClearState();
                 break;
             default:
                 break;
@@ -152,5 +154,16 @@ public class GameManager : MonoBehaviour
     void CameraSetting(Camera camera, bool enable)
     {
         camera.enabled = enable;
+    }
+
+    /// <summary> GameClearを表示するテキスト </summary>
+    [SerializeField] GameObject m_gameClearText = null;
+
+    /// <summary>
+    /// GameState.GameClearになったときの処理
+    /// </summary>
+    void OnGameClearState()
+    {
+        m_gameClearText.transform.localScale = Vector3.one;
     }
 }

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// オブジェクトを選択し、位置を変えるためのクラス
+/// </summary>
 public class ObjMoveManager : MonoBehaviour
 {
     /// <summary> 生成するオブジェクト </summary>
@@ -16,8 +19,6 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary> 掴んでいるオブジェクトのサイズ </summary>
     Vector3 m_grabbingObjSize;
 
-    /// <summary> ObjSelectManagerがアタッチされているオブジェクト </summary>
-    [SerializeField] GameObject m_objSelectManagerObj = null;
     /// <summary> ObjSelectManager </summary>
     ObjSelectManager m_objSelectManager;
 
@@ -36,7 +37,7 @@ public class ObjMoveManager : MonoBehaviour
 
     void Start()
     {
-        m_objSelectManager = m_objSelectManagerObj.GetComponent<ObjSelectManager>();
+        m_objSelectManager = GetComponent<ObjSelectManager>();
     }
 
     void Update()
@@ -81,7 +82,7 @@ public class ObjMoveManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Objectをドラッグアンドドロップする
+    /// Objectを選択し、ドラッグアンドドロップする
     /// </summary>
     void SwipeObject()
     {
@@ -136,7 +137,7 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary>
     /// 掴んでいるオブジェクトの幅を取得し返す
     /// </summary>
-    /// <param name="gameObject"></param>
+    /// <param name="gameObject">掴んでいるオブジェクト</param>
     /// <returns></returns>
     Vector3 ObjectSize(GameObject gameObject)
     {
@@ -147,7 +148,7 @@ public class ObjMoveManager : MonoBehaviour
     }
 
 
-    // 以下ボタンの処理
+    // ↓以下ボタンの処理
     public void OnClickXYSetPhase()
     {
         m_nowSetPhase = SetPhase.XYSet;
