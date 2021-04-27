@@ -63,13 +63,7 @@ public class SwipeController : MonoBehaviour
         Touch touch;
         // タッチされた指の数
         int touchCount = Input.touchCount;
-
-        if (Input.touchCount == 1)
-        {
-            touch = Input.GetTouch(0);
-            BehaviorFromTouch(touch);
-        }
-        if (Input.touchCount == 2)
+        if (Input.touchCount > 0)
         {
             for (int i = 0; i < touchCount; i++)
             {

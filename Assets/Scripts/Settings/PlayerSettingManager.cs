@@ -12,6 +12,7 @@ public class PlayerSettingManager : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void InitializeBeforeSceneLoad()
     {
+        // 設定画面のCanvasをロードし生成する(シーンをまたいでも消えないようにする)
         var settingCanvas = GameObject.Instantiate(Resources.Load("SettingCanvas"));
         GameObject.DontDestroyOnLoad(settingCanvas);
         //データがなかったら作成する
@@ -37,13 +38,12 @@ public class PlayerSettingManager : MonoBehaviour
 
     void Start()
     {
-        SettingData m_settingData = new SettingData();
         m_audioSource = GetComponent<AudioSource>();
         Debug.Log(FileManager.GetFilePath(m_textName));
         // Sliedrのvalueを初期化する
-        m_hSensitivitySlider.value = m_settingData.m_xSensitivity;
-        m_vSensitivitySlider.value = m_settingData.m_ySensitivity;
-        m_bGMVolumeSlider.value = m_settingData.m_bGMVolume;
+        m_hSensitivitySlider.value = LoadSetting.m_xSensitivity;
+        m_vSensitivitySlider.value = LoadSetting.m_ySensitivity;
+        m_bGMVolumeSlider.value = LoadSetting.m_bGMVolume;
     }
 
 
@@ -54,7 +54,7 @@ public class PlayerSettingManager : MonoBehaviour
     {
         get
         {
-            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.GetFilePath(m_textName));
+            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_textName));
             return settingData;
         }
     }
