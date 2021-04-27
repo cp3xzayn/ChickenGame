@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 
+/// <summary>
+/// 感度や音量などの設定を管理するクラス
+/// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
     /// <summary>テキストファイルの名前をSettingとする</summary>
