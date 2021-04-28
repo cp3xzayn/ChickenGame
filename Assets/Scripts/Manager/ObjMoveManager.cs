@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -26,7 +28,7 @@ public class ObjMoveManager : MonoBehaviour
     [SerializeField] GameObject m_setPhaseButtons = null;
     /// <summary> Tutorialを表示するPanel </summary>
     [SerializeField] GameObject m_tutorialPanel = null;
-    /// <summary> Tutorial </summary>
+    /// <summary> Tutorialクラス </summary>
     Tutorial m_tutorial;
 
     /// <summary> 現在のSetPhaseの状態 </summary>
@@ -62,26 +64,45 @@ public class ObjMoveManager : MonoBehaviour
                     break;
                 case SetPhase.XYSet:
                     Debug.Log("SetPhase.XYSet");
-                    TutorialSetActive(true);
                     SwipeObject();
                     break;
                 case SetPhase.YZSet:
                     Debug.Log("SetPhase.YZSet");
                     SwipeObject();
                     break;
-                case SetPhase.SetEnd:
-                    Debug.Log("SetPhase.SetEnd");
-                    TutorialSetActive(false);
-                    GameManager.Instance.SetNowState(GameState.Playing);
-                    break;
                 default:
                     break;
             }
+        }
+    }
 
-            if (m_tutorial.IsFinished)
-            {
-                m_tutorialPanel.SetActive(false);
-            }
+    /// <summary>
+    /// このメソッドを用いてSetPhaseを変更する
+    /// </summary>
+    /// <param name="phase"></param>
+    void SetSetPhase(SetPhase phase)
+    {
+        m_nowSetPhase = phase;
+        OnChangeSetPhase(m_nowSetPhase);
+    }
+
+    /// <summary>
+    /// SetPhaseが変わったときの処理（一度だけ呼ばれる）
+    /// </summary>
+    /// <param name="phase"></param>
+    void OnChangeSetPhase(SetPhase phase)
+    {
+        switch (phase)
+        {
+            case SetPhase.XYSet:
+                StartCoroutine(StartTutorial());
+                break;
+            case SetPhase.SetEnd:
+                Debug.Log("SetPhase.SetEnd");
+                GameManager.Instance.SetNowState(GameState.Playing);
+                break;
+            default:
+                break;
         }
     }
 
@@ -95,16 +116,18 @@ public class ObjMoveManager : MonoBehaviour
         m_objectPos = Vector3.zero;
         Instantiate(m_object, m_objectPos, Quaternion.identity);
         m_setPhaseButtons.SetActive(true);
-        m_nowSetPhase = SetPhase.XYSet;
+
+        SetSetPhase(SetPhase.XYSet);
     }
 
-    void TutorialSetActive(bool isActive)
+    /// <summary>
+    /// チュートリアルのPanelのサイズを変更する
+    /// </summary>
+    /// <param name="size"></param>
+    void TutorialSizeChange(Vector3 size)
     {
-        // Tutorialを表示する設定がなされていた場合
-        if (PlayerSetting.IsTutorial)
-        {
-            m_tutorialPanel.SetActive(isActive);
-        }
+        m_tutorialPanel.transform.localScale = size;
+        Debug.Log("Panelのサイズを変更します。");
     }
 
     /// <summary>
@@ -171,6 +194,27 @@ public class ObjMoveManager : MonoBehaviour
         Bounds bounds = mesh.bounds;
         m_grabbingObjSize = bounds.size;
         return m_grabbingObjSize;
+    }
+
+    /// <summary>
+    /// チュートリアルを表示するコルーチン
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator StartTutorial()
+    {
+        // Tutorialを表示する設定がなされていた場合
+        if (PlayerSetting.IsTutorial)
+        {
+            TutorialSizeChange(Vector3.one);
+            for (int i = 0; i < m_tutorial.SentenceLength; i++)
+            {
+                Debug.Log("abc");
+                yield return new WaitForSeconds(3f);
+                m_tutorial.TextUpdate();
+            }
+            TutorialSizeChange(Vector3.zero);
+            yield break;
+        }
     }
 
 

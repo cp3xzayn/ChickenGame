@@ -17,25 +17,25 @@ public class Tutorial : MonoBehaviour
     /// <summary> 現在表示している文章番号 </summary>
     int m_nowSentenceNum = 0;
 
-    /// <summary> Tutorialが終了したか判定する </summary>
-    bool isFinished = false;
-    /// <summary> Tutorialが終了したか判定する </summary>
-    public bool IsFinished => isFinished;
+    /// <summary> 文章の配列の長さ </summary>
+    int m_sentenceLength;
+    /// <summary> 文章の配列の長さ </summary>
+    public int SentenceLength => m_sentenceLength;
 
     void Start()
     {
+        m_sentenceLength = m_sentences.Length;
         SetNextSentence();
     }
 
+    /// <summary>
+    /// 文章を次の段階にできる時、次の要素数に進める
+    /// </summary>
     public void TextUpdate()
     {
         if (m_nowSentenceNum < m_sentences.Length)
         {
             SetNextSentence();
-        }
-        else if (m_nowSentenceNum >= m_sentences.Length)
-        {
-            isFinished = true;
         }
     }
 
