@@ -64,7 +64,7 @@ public class PanelManager : MonoBehaviour
         // 選択されたオブジェクトとPanel距離
         float distance;
         m_objectPos = m_objMoveManager.CubePos;
-        if (m_objMoveManager.nowSetPhase == SetPhase.XYSet)
+        if (m_objMoveManager.NowSetPhase == SetPhase.XYSet)
         {
             if (isWhicXYorYZ)
             {
@@ -82,7 +82,7 @@ public class PanelManager : MonoBehaviour
                 isWhicXYorYZ = false;
             }
         }
-        else if (m_objMoveManager.nowSetPhase == SetPhase.YZSet)
+        else if (m_objMoveManager.NowSetPhase == SetPhase.YZSet)
         {
             if (!isWhicXYorYZ)
             {

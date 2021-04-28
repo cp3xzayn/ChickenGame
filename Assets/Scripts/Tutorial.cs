@@ -1,31 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// Tutorialを管理するクラス
+/// </summary>
 public class Tutorial : MonoBehaviour
 {
-    [SerializeField] GameObject[] m_tutorialUI = null;
+    /// <summary> 表示する文章を格納する </summary>
+    [SerializeField] string[] m_sentences = null;
+    /// <summary> 現在表示する文章 </summary>
+    string m_nowSentence;
+    /// <summary> 文章を表示するText </summary>
+    [SerializeField] Text m_tutorialText = null;
+    /// <summary> 現在表示している文章番号 </summary>
+    int m_nowSentenceNum = 0;
 
-    private void Update()
+    /// <summary> Tutorialが終了したか判定する </summary>
+    bool isFinished = false;
+    /// <summary> Tutorialが終了したか判定する </summary>
+    public bool IsFinished => isFinished;
+
+    void Start()
     {
-        TutorialSetActive();
+        SetNextSentence();
+    }
+
+    public void TextUpdate()
+    {
+        if (m_nowSentenceNum < m_sentences.Length)
+        {
+            SetNextSentence();
+        }
+        else if (m_nowSentenceNum >= m_sentences.Length)
+        {
+            isFinished = true;
+        }
     }
 
     /// <summary>
-    /// TutorialのUIの表示非表示を決定する
+    /// 次の文章をセットする関数
     /// </summary>
-    void TutorialSetActive()
+    void SetNextSentence()
     {
-        foreach (var item in m_tutorialUI)
-        {
-            if (PlayerSetting.IsTutorial)
-            {
-                item.SetActive(true);
-            }
-            else
-            {
-                item.SetActive(false);
-            }
-        }
+        m_nowSentence = m_sentences[m_nowSentenceNum];
+        m_tutorialText.text = m_nowSentence;
+        m_nowSentenceNum++;
     }
 }

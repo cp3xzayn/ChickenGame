@@ -24,11 +24,20 @@ public class ObjMoveManager : MonoBehaviour
 
     /// <summary> SetPhaseを変更するButton </summary>
     [SerializeField] GameObject m_setPhaseButtons = null;
+    /// <summary> Tutorialを表示するPanel </summary>
+    [SerializeField] GameObject m_tutorialPanel = null;
+    /// <summary> Tutorial </summary>
+    Tutorial m_tutorial;
 
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
     /// <summary> 現在のSetPhaseの状態 </summary>
-    public SetPhase nowSetPhase => m_nowSetPhase;
+    public SetPhase NowSetPhase
+    {
+        set { m_nowSetPhase = value; }
+        get { return m_nowSetPhase; }
+    }
+
 
     void Awake()
     {
@@ -38,6 +47,7 @@ public class ObjMoveManager : MonoBehaviour
     void Start()
     {
         m_objSelectManager = GetComponent<ObjSelectManager>();
+        m_tutorial = m_tutorialPanel.GetComponent<Tutorial>();
     }
 
     void Update()
@@ -52,6 +62,7 @@ public class ObjMoveManager : MonoBehaviour
                     break;
                 case SetPhase.XYSet:
                     Debug.Log("SetPhase.XYSet");
+                    TutorialSetActive(true);
                     SwipeObject();
                     break;
                 case SetPhase.YZSet:
@@ -60,10 +71,16 @@ public class ObjMoveManager : MonoBehaviour
                     break;
                 case SetPhase.SetEnd:
                     Debug.Log("SetPhase.SetEnd");
+                    TutorialSetActive(false);
                     GameManager.Instance.SetNowState(GameState.Playing);
                     break;
                 default:
                     break;
+            }
+
+            if (m_tutorial.IsFinished)
+            {
+                m_tutorialPanel.SetActive(false);
             }
         }
     }
@@ -79,6 +96,15 @@ public class ObjMoveManager : MonoBehaviour
         Instantiate(m_object, m_objectPos, Quaternion.identity);
         m_setPhaseButtons.SetActive(true);
         m_nowSetPhase = SetPhase.XYSet;
+    }
+
+    void TutorialSetActive(bool isActive)
+    {
+        // Tutorialを表示する設定がなされていた場合
+        if (PlayerSetting.IsTutorial)
+        {
+            m_tutorialPanel.SetActive(isActive);
+        }
     }
 
     /// <summary>

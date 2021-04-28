@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     /// <summary> GameStateがStartになったときの処理 </summary>
     void OnStartState()
     {
-        StartCoroutine("StartUIAnimation");
+        StartCoroutine(StartUIAnimation());
         CameraSetting(m_prepareCamera, true);
         CameraSetting(m_playerCamera, false);
     }
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         m_gameStartTextObj.transform.localScale = Vector3.one;
         yield return new WaitForSeconds(m_indicateTime);
         m_gameStartTextObj.transform.localScale = Vector3.zero;
-        SetNowState(GameState.SelectObject);
+        SetNowState(GameState.SelectObject); // 選択フェーズに移行します
         yield break;
     }
 

@@ -23,11 +23,6 @@ public class PlayerSettingManager : MonoBehaviour
         {
             // 設定のデータを初期化しJsonファイルを作成する
             SettingData m_settingData = new SettingData();
-            m_settingData.m_xSensitivity = 0.1f;
-            m_settingData.m_ySensitivity = 0.1f;
-            m_settingData.m_bGMVolume = 0.1f;
-            m_settingData.m_sEVolume = 0.1f;
-            m_settingData.isTutorial = true;
             FileManager.TextSave(m_textName, JsonUtility.ToJson(m_settingData));
         }
     }
@@ -131,13 +126,13 @@ public class PlayerSettingManager : MonoBehaviour
 public class SettingData
 {
     /// <summary> 水平方向感度 </summary>
-    public float m_xSensitivity;
+    public float m_xSensitivity = 0.1f;
     /// <summary> 垂直方向感度 </summary>
-    public float m_ySensitivity;
+    public float m_ySensitivity = 0.1f;
     /// <summary> BGMの音量 </summary>
-    public float m_bGMVolume;
+    public float m_bGMVolume = 0.1f;
     /// <summary> 効果音の音量 </summary>
-    public float m_sEVolume;
+    public float m_sEVolume = 0.1f;
     /// <summary> チュートリアルの説明のOnOffを決めます </summary>
-    public bool isTutorial;
+    public bool isTutorial = true;
 }
