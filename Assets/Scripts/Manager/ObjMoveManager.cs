@@ -30,11 +30,7 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
     /// <summary> 現在のSetPhaseの状態 </summary>
-    public SetPhase NowSetPhase
-    {
-        set { m_nowSetPhase = value; }
-        get { return m_nowSetPhase; }
-    }
+    public SetPhase NowSetPhase => m_nowSetPhase;
 
 
     void Awake()
@@ -79,7 +75,7 @@ public class ObjMoveManager : MonoBehaviour
     /// このメソッドを用いてSetPhaseを変更する
     /// </summary>
     /// <param name="phase"></param>
-    void SetSetPhase(SetPhase phase)
+    public void SetSetPhase(SetPhase phase)
     {
         m_nowSetPhase = phase;
         OnChangeSetPhase(m_nowSetPhase);
@@ -93,7 +89,7 @@ public class ObjMoveManager : MonoBehaviour
     {
         switch (phase)
         {
-            case SetPhase.XYSet:
+            case SetPhase.Tutorial:
                 StartTutorial();
                 break;
             default:
@@ -112,7 +108,7 @@ public class ObjMoveManager : MonoBehaviour
         Instantiate(m_object, m_objectPos, Quaternion.identity);
         m_setPhaseButtons.SetActive(true);
 
-        SetSetPhase(SetPhase.XYSet);
+        SetSetPhase(SetPhase.Tutorial);
     }
 
     /// <summary>
@@ -192,7 +188,7 @@ public class ObjMoveManager : MonoBehaviour
         }
         else
         {
-            return;
+            SetSetPhase(SetPhase.XYSet);
         }
     }
 
@@ -200,16 +196,25 @@ public class ObjMoveManager : MonoBehaviour
     // ↓以下ボタンの処理
     public void OnClickXYSetPhase()
     {
-        m_nowSetPhase = SetPhase.XYSet;
+        if (m_nowSetPhase != SetPhase.Tutorial)
+        {
+            m_nowSetPhase = SetPhase.XYSet;
+        }
     }
     public void OnClickYZSetPhase()
     {
-        m_nowSetPhase = SetPhase.YZSet;
+        if (m_nowSetPhase != SetPhase.Tutorial)
+        {
+            m_nowSetPhase = SetPhase.YZSet;
+        }
     }
     public void OnClickEndPhase()
     {
-        m_nowSetPhase = SetPhase.SetEnd;
-        m_setPhaseButtons.SetActive(false);
+        if (m_nowSetPhase != SetPhase.Tutorial)
+        {
+            m_nowSetPhase = SetPhase.SetEnd;
+            m_setPhaseButtons.SetActive(false);
+        }
     }
 
 }
@@ -221,6 +226,8 @@ public enum SetPhase
 {
     /// <summary> 初期化時 </summary>
     Initialize,
+
+    Tutorial,
     /// <summary> XY平面での座標決定 </summary>
     XYSet,
     /// <summary> YZ平面での座標決定 </summary>

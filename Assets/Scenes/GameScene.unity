@@ -3389,6 +3389,7 @@ MonoBehaviour:
   m_xYZPointer: {fileID: 1130976335}
   m_endPointer: {fileID: 555368267}
   m_settingPointer: {fileID: 322390595}
+  m_managers: {fileID: 161440496}
 --- !u!1 &445731225
 GameObject:
   m_ObjectHideFlags: 0
@@ -7646,7 +7647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2929252283882492581
 RectTransform:
   m_ObjectHideFlags: 0

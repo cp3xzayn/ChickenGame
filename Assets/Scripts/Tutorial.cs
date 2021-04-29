@@ -32,9 +32,13 @@ public class Tutorial : MonoBehaviour
     /// <summary> 設定画面を開くボタンを示すPointer </summary>
     [SerializeField] GameObject m_settingPointer = null;
 
+    [SerializeField] GameObject m_managers = null;
+    ObjMoveManager m_objMoveManager;
+
 
     void Start()
     {
+        m_objMoveManager = m_managers.GetComponent<ObjMoveManager>();
         m_sentenceLength = m_sentences.Length;
         SetNextSentence();
     }
@@ -53,7 +57,9 @@ public class Tutorial : MonoBehaviour
         {
             Debug.Log("Tutorial終了");
             m_nowSentenceNum = 0;
+            TutorialObjectIndicate();
             this.transform.localScale = Vector3.zero;
+            m_objMoveManager.SetSetPhase(SetPhase.XYSet);
         }
     }
 
@@ -67,7 +73,6 @@ public class Tutorial : MonoBehaviour
         m_nowSentenceNum++;
     }
 
-
     /// <summary>
     /// TutorialのUIの移動、Animationを管理する
     /// </summary>
@@ -77,7 +82,6 @@ public class Tutorial : MonoBehaviour
         switch (m_nowSentenceNum)
         {
             case 0:
-                Debug.Log("a");
                 m_mouseCursor.localScale = Vector3.zero;
                 m_xYZPointer.localScale = Vector3.zero;
                 m_endPointer.SetActive(false);
