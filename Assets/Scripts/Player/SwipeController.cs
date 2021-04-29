@@ -18,6 +18,10 @@ public class SwipeController : MonoBehaviour
     PlayerCameraY m_playerCameraY;
     /// <summary> PlayerのAnimator </summary>
     Animator m_playerAnimator;
+    /// <summary> AudioSource </summary>
+    AudioSource m_audioSource;
+    /// <summary> Jumpしたときの効果音 </summary>
+    [SerializeField] AudioClip m_flySE = null;
 
     void Start()
     {
@@ -25,6 +29,7 @@ public class SwipeController : MonoBehaviour
         m_startPos = this.transform.position;
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
         m_playerAnimator = GetComponent<Animator>();
+        m_audioSource = GetComponent<AudioSource>();
 
         // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
@@ -187,6 +192,7 @@ public class SwipeController : MonoBehaviour
         {
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
             m_playerAnimator.SetTrigger("jump");
+            m_audioSource.PlayOneShot(m_flySE);
         }
         isJump = false;
     }
