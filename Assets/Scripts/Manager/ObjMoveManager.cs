@@ -70,6 +70,10 @@ public class ObjMoveManager : MonoBehaviour
                     Debug.Log("SetPhase.YZSet");
                     SwipeObject();
                     break;
+                case SetPhase.SetEnd:
+                    Debug.Log("SetPhase.SetEnd");
+                    GameManager.Instance.SetNowState(GameState.Playing);
+                    break;
                 default:
                     break;
             }
@@ -95,11 +99,7 @@ public class ObjMoveManager : MonoBehaviour
         switch (phase)
         {
             case SetPhase.XYSet:
-                StartCoroutine(StartTutorial());
-                break;
-            case SetPhase.SetEnd:
-                Debug.Log("SetPhase.SetEnd");
-                GameManager.Instance.SetNowState(GameState.Playing);
+                StartTutorial();
                 break;
             default:
                 break;
@@ -118,16 +118,6 @@ public class ObjMoveManager : MonoBehaviour
         m_setPhaseButtons.SetActive(true);
 
         SetSetPhase(SetPhase.XYSet);
-    }
-
-    /// <summary>
-    /// チュートリアルのPanelのサイズを変更する
-    /// </summary>
-    /// <param name="size"></param>
-    void TutorialSizeChange(Vector3 size)
-    {
-        m_tutorialPanel.transform.localScale = size;
-        Debug.Log("Panelのサイズを変更します。");
     }
 
     /// <summary>
@@ -197,24 +187,11 @@ public class ObjMoveManager : MonoBehaviour
     }
 
     /// <summary>
-    /// チュートリアルを表示するコルーチン
+    /// チュートリアルを開始する
     /// </summary>
-    /// <returns></returns>
-    IEnumerator StartTutorial()
+    void StartTutorial()
     {
-        // Tutorialを表示する設定がなされていた場合
-        if (PlayerSetting.IsTutorial)
-        {
-            TutorialSizeChange(Vector3.one);
-            for (int i = 0; i < m_tutorial.SentenceLength; i++)
-            {
-                Debug.Log("abc");
-                yield return new WaitForSeconds(3f);
-                m_tutorial.TextUpdate();
-            }
-            TutorialSizeChange(Vector3.zero);
-            yield break;
-        }
+        m_tutorialPanel.transform.localScale = Vector3.one;
     }
 
 
