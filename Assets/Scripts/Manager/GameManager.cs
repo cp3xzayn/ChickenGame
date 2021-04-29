@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameState
 {
@@ -10,6 +11,8 @@ public enum GameState
     SelectObject,
     /// <summary> Objectの設置位置を決定する </summary>
     Prepare,
+    /// <summary> ゲームが始まる前のカウントダウン </summary>
+    CountDownPlaying,
     /// <summary> ゲームプレイ </summary>
     Playing,
     /// <summary> ゲーム終了 </summary>
@@ -66,9 +69,12 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameState.PrepareObject");
                 OnPrepareState();
                 break;
+            case GameState.CountDownPlaying:
+                Debug.Log("GameState.CountDownPlaying");
+                OnCountDownState();
+                break;
             case GameState.Playing:
                 Debug.Log("GameState.Playing");
-                OnPlayingState();
                 break;
             case GameState.GameClear:
                 Debug.Log("GameState.GameClear");
@@ -135,8 +141,8 @@ public class GameManager : MonoBehaviour
     /// <summary> 生成するJumpButton </summary>
     [SerializeField] GameObject m_jumpButton = null;
 
-    /// <summary> GameStateがPlayingになったときの処理 </summary>
-    void OnPlayingState()
+    /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
+    void OnCountDownState()
     {
         m_player.SetActive(true);
         m_joystick.SetActive(true);
@@ -144,6 +150,33 @@ public class GameManager : MonoBehaviour
         CameraSetting(m_playerCamera, true);
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
         jumpButton.transform.SetParent(m_canvas.transform, false);
+        StartCoroutine(CountDown());
+    }
+
+    /// <summary> カウント </summary>
+    int m_count = 3;
+    /// <summary> Countを表示するテキストのオブジェクト </summary>
+    [SerializeField] GameObject m_countTextObj = null;
+    /// <summary> Countを表示するテキスト </summary>
+    Text m_countText;
+
+    /// <summary>
+    /// カウントダウンをするコルーチン
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CountDown()
+    {
+        m_countText = m_countTextObj.GetComponent<Text>();
+        m_countTextObj.SetActive(true);
+        // カウントの数だけループさせる
+        while (m_count > 0)
+        {
+            m_countText.text = m_count.ToString();
+            yield return new WaitForSeconds(1f);
+            m_count--;
+        }
+        m_countTextObj.SetActive(false);
+        SetNowState(GameState.Playing);
     }
 
     /// <summary>

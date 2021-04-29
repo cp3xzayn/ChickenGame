@@ -63,7 +63,7 @@ public class ObjMoveManager : MonoBehaviour
                     break;
                 case SetPhase.SetEnd:
                     Debug.Log("SetPhase.SetEnd");
-                    GameManager.Instance.SetNowState(GameState.Playing);
+                    GameManager.Instance.SetNowState(GameState.CountDownPlaying);
                     break;
                 default:
                     break;
@@ -226,7 +226,7 @@ public enum SetPhase
 {
     /// <summary> 初期化時 </summary>
     Initialize,
-
+    /// <summary> Tutorial </summary>
     Tutorial,
     /// <summary> XY平面での座標決定 </summary>
     XYSet,

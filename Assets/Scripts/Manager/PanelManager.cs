@@ -42,7 +42,7 @@ public class PanelManager : MonoBehaviour
             case GameState.Prepare:
                 IndicatePanelsForObjectMove();
                 break;
-            case GameState.Playing:
+            case GameState.CountDownPlaying:
                 PanelActive(m_xYPanel, false);
                 PanelActive(m_yZPanel, false);
                 break;

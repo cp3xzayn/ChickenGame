@@ -34,14 +34,17 @@ public class SwipeController : MonoBehaviour
 
     void Update()
     {
-        // editor上かスマホかで挙動を変える
-        if (Application.isEditor)
+        if (GameManager.Instance.NowGameState == GameState.Playing)
         {
-            PlayerMoveOnEditor();
-        }
-        else
-        {
-            TouchSwipe();
+            // editor上かスマホかで挙動を変える
+            if (Application.isEditor)
+            {
+                PlayerMoveOnEditor();
+            }
+            else
+            {
+                TouchSwipe();
+            }
         }
     }
 
