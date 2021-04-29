@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7703584232685302471}
   - component: {fileID: 3273552575484446368}
   m_Layer: 0
-  m_Name: PlayerCamera
+  m_Name: PlayerCameraObject
   m_TagString: PlayerCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9403733ca2a355c4eb35c3e67d15e6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerCamera: {fileID: 3181160284548653027}
+  m_playerCamera: {fileID: 2676830065750469110}
   m_xSensitivity: 0.1
   m_fixedJoystick: {fileID: 0}
   m_movingSpeed: 5

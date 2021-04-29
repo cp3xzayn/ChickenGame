@@ -6100,7 +6100,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41744
+  m_Name: pb_Mesh54220
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6306,7 +6306,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41784
+  m_Name: pb_Mesh54260
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8054,11 +8054,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2676830065750469110, guid: 1661af25ba3194a47970f8851fe101f5,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerCameraObject
+      objectReference: {fileID: 0}
     - target: {fileID: 6126193166680019291, guid: 1661af25ba3194a47970f8851fe101f5,
         type: 3}
       propertyPath: m_fixedJoystick
       value: 
       objectReference: {fileID: 2929252283882492584}
+    - target: {fileID: 6126193166680019291, guid: 1661af25ba3194a47970f8851fe101f5,
+        type: 3}
+      propertyPath: m_playerCamera
+      value: 
+      objectReference: {fileID: 8465565265173911288}
     - target: {fileID: 6126193166680019292, guid: 1661af25ba3194a47970f8851fe101f5,
         type: 3}
       propertyPath: m_Name
@@ -8124,8 +8134,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7703584232685302471, guid: 1661af25ba3194a47970f8851fe101f5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7703584232685302471, guid: 1661af25ba3194a47970f8851fe101f5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1661af25ba3194a47970f8851fe101f5, type: 3}
+--- !u!1 &8465565265173911288 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2676830065750469110, guid: 1661af25ba3194a47970f8851fe101f5,
+    type: 3}
+  m_PrefabInstance: {fileID: 8465565265173911287}
+  m_PrefabAsset: {fileID: 0}
 --- !u!136 &8813163859534620741
 CapsuleCollider:
   m_ObjectHideFlags: 0
