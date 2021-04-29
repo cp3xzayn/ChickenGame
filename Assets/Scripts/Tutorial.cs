@@ -23,10 +23,6 @@ public class Tutorial : MonoBehaviour
     public int SentenceLength => m_sentenceLength;
 
 
-    /// <summary> 回転速度 </summary>
-    [SerializeField] float m_turnSpeed = 2.0f;
-    /// <summary> 半径 </summary>
-    [SerializeField] float m_radius = 1;
     /// <summary> マウスカーソルのRectTransform </summary>
     [SerializeField] RectTransform m_mouseCursor = null;
     /// <summary> XY,YZを示すPointer </summary>
@@ -43,12 +39,6 @@ public class Tutorial : MonoBehaviour
         SetNextSentence();
     }
 
-    void Update()
-    {
-        TutorialObjectIndicate();
-    }
-
-
     /// <summary>
     /// 文章を次の段階にできる時、次の要素数に進める（EventTriggerに設定している）
     /// </summary>
@@ -57,6 +47,7 @@ public class Tutorial : MonoBehaviour
         if (m_nowSentenceNum < m_sentences.Length)
         {
             SetNextSentence();
+            TutorialObjectIndicate();
         }
         else
         {
@@ -94,7 +85,6 @@ public class Tutorial : MonoBehaviour
                 break;
             case 2:
                 m_mouseCursor.localScale = Vector3.one;
-                MoveCircle();
                 break;
             case 3:
                 m_mouseCursor.localScale = Vector3.zero;
@@ -111,14 +101,4 @@ public class Tutorial : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 円形にマウスカーソルのオブジェクトを回転させる
-    /// </summary>
-    void MoveCircle()
-    {
-        float x = m_radius * Mathf.Sin(Time.time * m_turnSpeed);
-        float y = m_radius * Mathf.Cos(Time.time * m_turnSpeed);
-
-        m_mouseCursor.position += new Vector3(x, y, 0);
-    }
 }

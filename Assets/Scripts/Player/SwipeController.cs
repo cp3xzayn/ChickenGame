@@ -16,12 +16,16 @@ public class SwipeController : MonoBehaviour
     [SerializeField] GameObject m_playerCamera = null;
     /// <summary> PlayerCameraY </summary>
     PlayerCameraY m_playerCameraY;
+    /// <summary> PlayerのAnimator </summary>
+    Animator m_playerAnimator;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
+        m_playerAnimator = GetComponent<Animator>();
+
         // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
@@ -141,12 +145,14 @@ public class SwipeController : MonoBehaviour
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             m_rb.velocity = new Vector3(0f, m_rb.velocity.y, 0f);
+            m_playerAnimator.SetInteger("Walk", 0);
         }
         else
         {
             Vector3 velo = dir.normalized * m_movingSpeed; // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
+            m_playerAnimator.SetInteger("Walk", 1);
         }
 
         // ジャンプの入力を取得しジャンプする
@@ -177,6 +183,7 @@ public class SwipeController : MonoBehaviour
         if (isJump)
         {
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+            m_playerAnimator.SetTrigger("jump");
         }
         isJump = false;
     }

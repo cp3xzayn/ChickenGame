@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// オブジェクトを選択し、位置を変えるためのクラス
@@ -21,16 +20,13 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary> 掴んでいるオブジェクトのサイズ </summary>
     Vector3 m_grabbingObjSize;
 
-    /// <summary> ObjSelectManager </summary>
-    ObjSelectManager m_objSelectManager;
-
     /// <summary> SetPhaseを変更するButton </summary>
     [SerializeField] GameObject m_setPhaseButtons = null;
     /// <summary> Tutorialを表示するPanel </summary>
     [SerializeField] GameObject m_tutorialPanel = null;
-    /// <summary> Tutorialクラス </summary>
-    Tutorial m_tutorial;
 
+    /// <summary> ObjSelectManager </summary>
+    ObjSelectManager m_objSelectManager;
     /// <summary> 現在のSetPhaseの状態 </summary>
     private SetPhase m_nowSetPhase;
     /// <summary> 現在のSetPhaseの状態 </summary>
@@ -49,7 +45,6 @@ public class ObjMoveManager : MonoBehaviour
     void Start()
     {
         m_objSelectManager = GetComponent<ObjSelectManager>();
-        m_tutorial = m_tutorialPanel.GetComponent<Tutorial>();
     }
 
     void Update()
