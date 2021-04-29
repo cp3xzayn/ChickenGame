@@ -191,7 +191,14 @@ public class ObjMoveManager : MonoBehaviour
     /// </summary>
     void StartTutorial()
     {
-        m_tutorialPanel.transform.localScale = Vector3.one;
+        if (PlayerSetting.IsTutorial)
+        {
+            m_tutorialPanel.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            return;
+        }
     }
 
 

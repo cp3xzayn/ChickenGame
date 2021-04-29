@@ -33,6 +33,8 @@ public class Tutorial : MonoBehaviour
     [SerializeField] RectTransform m_xYZPointer = null;
     /// <summary> 設置完了を示すPointer </summary>
     [SerializeField] GameObject m_endPointer = null;
+    /// <summary> 設定画面を開くボタンを示すPointer </summary>
+    [SerializeField] GameObject m_settingPointer = null;
 
 
     void Start()
@@ -88,6 +90,7 @@ public class Tutorial : MonoBehaviour
                 m_mouseCursor.localScale = Vector3.zero;
                 m_xYZPointer.localScale = Vector3.zero;
                 m_endPointer.SetActive(false);
+                m_settingPointer.SetActive(false);
                 break;
             case 2:
                 m_mouseCursor.localScale = Vector3.one;
@@ -100,6 +103,10 @@ public class Tutorial : MonoBehaviour
             case 4:
                 m_xYZPointer.localScale = Vector3.zero;
                 m_endPointer.SetActive(true);
+                break;
+            case 5:
+                m_endPointer.SetActive(false);
+                m_settingPointer.SetActive(true);
                 break;
         }
     }
