@@ -199,11 +199,7 @@ public class SwipeController : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Object")
-        {
-            isJump = true;
-        }
-        if (col.gameObject.tag == "FixedObject")
+        if (col.gameObject.tag == "Object" || col.gameObject.tag == "FixedObject")
         {
             isJump = true;
         }

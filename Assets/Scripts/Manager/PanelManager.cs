@@ -63,7 +63,7 @@ public class PanelManager : MonoBehaviour
     {
         // 選択されたオブジェクトとPanel距離
         float distance;
-        m_objectPos = m_objMoveManager.CubePos;
+        m_objectPos = m_objMoveManager.ObjectPos;
         if (m_objMoveManager.NowSetPhase == SetPhase.XYSet || m_objMoveManager.NowSetPhase == SetPhase.Tutorial)
         {
             if (isWhicXYorYZ)

@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary> 準備フェーズのカメラ </summary>
     [SerializeField] Camera m_prepareCamera = null;
-    /// <summary> Playerの視点の噛めた </summary>
+    /// <summary> Playerの視点のカメラ </summary>
     [SerializeField] Camera m_playerCamera = null;
 
     void Awake()
@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     /// <summary> GameStartTextのオブジェクト </summary>
     [SerializeField] GameObject m_gameStartTextObj = null;
     /// <summary> 表示する秒数 </summary>
@@ -122,13 +121,14 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /// <summary> 固定のオブジェクト </summary>
-    [Header("固定オブジェクト"), SerializeField] GameObject m_fixedObjects = null;
+    /// <summary> FixedFieldManager </summary>
+    FixedFieldManager m_fixedFieldManager;
 
     /// <summary> GameStateがPrepareになったときの処理 </summary>
     void OnPrepareState()
     {
-        m_fixedObjects.SetActive(true);
+        m_fixedFieldManager = FindObjectOfType<FixedFieldManager>().GetComponent<FixedFieldManager>();
+        Instantiate(m_fixedFieldManager.SelectedFixedField(), Vector3.zero, Quaternion.identity);
     }
 
 
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
     /// <summary> Canvas </summary>
     [SerializeField] GameObject m_canvas = null;
     /// <summary> 生成するJumpButton </summary>
-    [SerializeField] GameObject m_jumpButton = null;
+    [Header("Jumpボタン"), SerializeField] GameObject m_jumpButton = null;
 
     /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
     void OnCountDownState()

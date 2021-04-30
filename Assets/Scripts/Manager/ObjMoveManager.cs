@@ -12,7 +12,7 @@ public class ObjMoveManager : MonoBehaviour
     /// <summary> オブジェクトのポジション </summary>
     private Vector3 m_objectPos;
     /// <summary> オブジェクトのポジション </summary>
-    public Vector3 CubePos => m_objectPos;
+    public Vector3 ObjectPos => m_objectPos;
     /// <summary> オブジェクトをつかんでいるか判断する </summary>
     bool isGrabbing = false;
     /// <summary> 掴んでいるオブジェクト </summary>
