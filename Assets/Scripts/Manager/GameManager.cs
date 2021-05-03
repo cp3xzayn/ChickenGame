@@ -28,15 +28,16 @@ public class GameManager : MonoBehaviour
     /// <summary> 現在のGameState </summary>
     public GameState NowGameState => m_nowGameState;
 
+    /// <summary> Playerのオブジェクト </summary>
+    GameObject m_player;
     /// <summary> 準備フェーズのカメラ </summary>
     [SerializeField] Camera m_prepareCamera = null;
-    /// <summary> Playerの視点のカメラ </summary>
-    [SerializeField] Camera m_playerCamera = null;
 
     void Awake()
     {
         Instance = this;
         SetNowState(GameState.Start); // 初期化
+        m_player = Resources.Load<GameObject>("Player/" + SelectCharaInfo.CharaName);
     }
 
     /// <summary>
@@ -95,7 +96,6 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(StartUIAnimation());
         CameraSetting(m_prepareCamera, true);
-        CameraSetting(m_playerCamera, false);
     }
 
     /// <summary>
@@ -132,8 +132,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /// <summary> Playerのオブジェクト </summary>
-    [Header("Player"), SerializeField] GameObject m_player = null;
     /// <summary> Joystick </summary>
     [Header("JoyStick"), SerializeField] GameObject m_joystick = null;
     /// <summary> Canvas </summary>
@@ -141,13 +139,14 @@ public class GameManager : MonoBehaviour
     /// <summary> 生成するJumpButton </summary>
     [Header("Jumpボタン"), SerializeField] GameObject m_jumpButton = null;
 
+    [SerializeField] Transform m_spawnPos = null;
+
     /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
     void OnCountDownState()
     {
-        m_player.SetActive(true);
+        Instantiate(m_player, m_spawnPos.position, Quaternion.identity);
         m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
-        CameraSetting(m_playerCamera, true);
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
         jumpButton.transform.SetParent(m_canvas.transform, false);
         StartCoroutine(CountDown());

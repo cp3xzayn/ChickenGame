@@ -30,7 +30,7 @@ public class SwipeController : MonoBehaviour
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
         m_playerAnimator = GetComponent<Animator>();
         m_audioSource = GetComponent<AudioSource>();
-
+        m_fixedJoystick = FindObjectOfType<FixedJoystick>();
         // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
@@ -65,7 +65,7 @@ public class SwipeController : MonoBehaviour
     GameObject m_jumpButton = null;
 
     /// <summary> Joystick </summary>
-    [Header("JoyStick") ,SerializeField] FixedJoystick m_fixedJoystick = null;
+    FixedJoystick m_fixedJoystick;
 
     /// <summary>
     /// スマホ画面のタッチでの視点移動+Playerの移動
