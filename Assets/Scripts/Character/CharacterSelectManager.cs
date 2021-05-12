@@ -16,7 +16,7 @@ public class CharacterSelectManager : MonoBehaviour
     /// <summary> キャラ選択Panel </summary>
     [SerializeField] GameObject m_charaPanel = null;
     /// <summary> 選ばれたキャラを生成する場所 </summary>
-    [SerializeField] Transform m_generateTransform;
+    [SerializeField] Transform m_generateTransform = null;
 
     /// <summary> 選択されたキャラの名前 </summary>
     private string m_selectCharaName;

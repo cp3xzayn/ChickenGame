@@ -206,6 +206,7 @@ public class SwipeController : MonoBehaviour
         if (col.gameObject.tag == "FallPos")
         {
             this.transform.position = m_startPos;
+            this.transform.localEulerAngles = new Vector3(0, 90, 0);
         }
 
         if (col.gameObject.tag == "Goal")

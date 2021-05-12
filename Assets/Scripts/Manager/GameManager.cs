@@ -144,11 +144,15 @@ public class GameManager : MonoBehaviour
     /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
     void OnCountDownState()
     {
-        Instantiate(m_player, m_spawnPos.position, Quaternion.identity);
+        // Playerを生成し、正面を向ける
+        Instantiate(m_player, m_spawnPos.position, Quaternion.Euler(0, 90, 0));
+
         m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
+        // JumpButtonを生成する
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
         jumpButton.transform.SetParent(m_canvas.transform, false);
+
         StartCoroutine(CountDown());
     }
 
