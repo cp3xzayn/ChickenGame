@@ -7,10 +7,13 @@ public class PlayerCameraY : MonoBehaviour
 {
     void Update()
     {
-        // Editor上で実行したとき
-        if (Application.isEditor)
+        if (GameManager.Instance.NowGameState == GameState.Playing)
         {
-            PlayerLookVerticalOnEditor();
+            // Editor上で実行したとき
+            if (Application.isEditor)
+            {
+                PlayerLookVerticalOnEditor();
+            }
         }
     }
 

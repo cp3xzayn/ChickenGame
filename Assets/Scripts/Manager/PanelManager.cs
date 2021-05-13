@@ -42,7 +42,7 @@ public class PanelManager : MonoBehaviour
             case GameState.Prepare:
                 IndicatePanelsForObjectMove();
                 break;
-            case GameState.Playing:
+            case GameState.CountDownPlaying:
                 PanelActive(m_xYPanel, false);
                 PanelActive(m_yZPanel, false);
                 break;
@@ -63,8 +63,8 @@ public class PanelManager : MonoBehaviour
     {
         // 選択されたオブジェクトとPanel距離
         float distance;
-        m_objectPos = m_objMoveManager.CubePos;
-        if (m_objMoveManager.nowSetPhase == SetPhase.XYSet)
+        m_objectPos = m_objMoveManager.ObjectPos;
+        if (m_objMoveManager.NowSetPhase == SetPhase.XYSet || m_objMoveManager.NowSetPhase == SetPhase.Tutorial)
         {
             if (isWhicXYorYZ)
             {
@@ -82,7 +82,7 @@ public class PanelManager : MonoBehaviour
                 isWhicXYorYZ = false;
             }
         }
-        else if (m_objMoveManager.nowSetPhase == SetPhase.YZSet)
+        else if (m_objMoveManager.NowSetPhase == SetPhase.YZSet)
         {
             if (!isWhicXYorYZ)
             {

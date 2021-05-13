@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GameState
 {
@@ -10,6 +11,8 @@ public enum GameState
     SelectObject,
     /// <summary> Objectの設置位置を決定する </summary>
     Prepare,
+    /// <summary> ゲームが始まる前のカウントダウン </summary>
+    CountDownPlaying,
     /// <summary> ゲームプレイ </summary>
     Playing,
     /// <summary> ゲーム終了 </summary>
@@ -25,15 +28,16 @@ public class GameManager : MonoBehaviour
     /// <summary> 現在のGameState </summary>
     public GameState NowGameState => m_nowGameState;
 
+    /// <summary> Playerのオブジェクト </summary>
+    GameObject m_player;
     /// <summary> 準備フェーズのカメラ </summary>
     [SerializeField] Camera m_prepareCamera = null;
-    /// <summary> Playerの視点の噛めた </summary>
-    [SerializeField] Camera m_playerCamera = null;
 
     void Awake()
     {
         Instance = this;
         SetNowState(GameState.Start); // 初期化
+        m_player = Resources.Load<GameObject>("Player/" + SelectCharaInfo.CharaName);
     }
 
     /// <summary>
@@ -66,9 +70,12 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GameState.PrepareObject");
                 OnPrepareState();
                 break;
+            case GameState.CountDownPlaying:
+                Debug.Log("GameState.CountDownPlaying");
+                OnCountDownState();
+                break;
             case GameState.Playing:
                 Debug.Log("GameState.Playing");
-                OnPlayingState();
                 break;
             case GameState.GameClear:
                 Debug.Log("GameState.GameClear");
@@ -79,7 +86,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     /// <summary> GameStartTextのオブジェクト </summary>
     [SerializeField] GameObject m_gameStartTextObj = null;
     /// <summary> 表示する秒数 </summary>
@@ -88,9 +94,8 @@ public class GameManager : MonoBehaviour
     /// <summary> GameStateがStartになったときの処理 </summary>
     void OnStartState()
     {
-        StartCoroutine("StartUIAnimation");
+        StartCoroutine(StartUIAnimation());
         CameraSetting(m_prepareCamera, true);
-        CameraSetting(m_playerCamera, false);
     }
 
     /// <summary>
@@ -102,7 +107,7 @@ public class GameManager : MonoBehaviour
         m_gameStartTextObj.transform.localScale = Vector3.one;
         yield return new WaitForSeconds(m_indicateTime);
         m_gameStartTextObj.transform.localScale = Vector3.zero;
-        SetNowState(GameState.SelectObject);
+        SetNowState(GameState.SelectObject); // 選択フェーズに移行します
         yield break;
     }
 
@@ -116,34 +121,65 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /// <summary> 固定のオブジェクト </summary>
-    [Header("固定オブジェクト"), SerializeField] GameObject m_fixedObjects = null;
+    /// <summary> FixedFieldManager </summary>
+    FixedFieldManager m_fixedFieldManager;
 
     /// <summary> GameStateがPrepareになったときの処理 </summary>
     void OnPrepareState()
     {
-        m_fixedObjects.SetActive(true);
+        m_fixedFieldManager = FindObjectOfType<FixedFieldManager>().GetComponent<FixedFieldManager>();
+        Instantiate(m_fixedFieldManager.SelectedFixedField(), Vector3.zero, Quaternion.identity);
     }
 
 
-    /// <summary> Playerのオブジェクト </summary>
-    [Header("Player"), SerializeField] GameObject m_player = null;
     /// <summary> Joystick </summary>
     [Header("JoyStick"), SerializeField] GameObject m_joystick = null;
     /// <summary> Canvas </summary>
     [SerializeField] GameObject m_canvas = null;
     /// <summary> 生成するJumpButton </summary>
-    [SerializeField] GameObject m_jumpButton = null;
+    [Header("Jumpボタン"), SerializeField] GameObject m_jumpButton = null;
+    /// <summary> Playerを生成するポジション </summary>
+    [SerializeField] Transform m_spawnPos = null;
 
-    /// <summary> GameStateがPlayingになったときの処理 </summary>
-    void OnPlayingState()
+    /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
+    void OnCountDownState()
     {
-        m_player.SetActive(true);
+        // Playerを生成し、正面を向ける
+        Instantiate(m_player, m_spawnPos.position, Quaternion.Euler(0, 90, 0));
+
         m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
-        CameraSetting(m_playerCamera, true);
+        // JumpButtonを生成する
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
         jumpButton.transform.SetParent(m_canvas.transform, false);
+
+        StartCoroutine(CountDown());
+    }
+
+    /// <summary> カウント </summary>
+    int m_count = 3;
+    /// <summary> Countを表示するテキストのオブジェクト </summary>
+    [SerializeField] GameObject m_countTextObj = null;
+    /// <summary> Countを表示するテキスト </summary>
+    Text m_countText;
+
+    /// <summary>
+    /// カウントダウンをするコルーチン
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CountDown()
+    {
+        m_countText = m_countTextObj.GetComponent<Text>();
+        m_countTextObj.SetActive(true);
+        // カウントの数だけループさせる
+        while (m_count > 0)
+        {
+            m_countText.text = m_count.ToString();
+            yield return new WaitForSeconds(1f);
+            m_count--;
+        }
+        m_countTextObj.SetActive(false);
+        SetNowState(GameState.Playing);
     }
 
     /// <summary>

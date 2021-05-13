@@ -16,12 +16,21 @@ public class SwipeController : MonoBehaviour
     [SerializeField] GameObject m_playerCamera = null;
     /// <summary> PlayerCameraY </summary>
     PlayerCameraY m_playerCameraY;
+    /// <summary> PlayerのAnimator </summary>
+    Animator m_playerAnimator;
+    /// <summary> AudioSource </summary>
+    AudioSource m_audioSource;
+    /// <summary> Jumpしたときの効果音 </summary>
+    [SerializeField] AudioClip m_flySE = null;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         m_startPos = this.transform.position;
         m_playerCameraY = m_playerCamera.GetComponent<PlayerCameraY>();
+        m_playerAnimator = GetComponent<Animator>();
+        m_audioSource = GetComponent<AudioSource>();
+        m_fixedJoystick = FindObjectOfType<FixedJoystick>();
         // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
         Button m_jump = m_jumpButton.GetComponent<Button>();
@@ -30,14 +39,17 @@ public class SwipeController : MonoBehaviour
 
     void Update()
     {
-        // editor上かスマホかで挙動を変える
-        if (Application.isEditor)
+        if (GameManager.Instance.NowGameState == GameState.Playing)
         {
-            PlayerMoveOnEditor();
-        }
-        else
-        {
-            TouchSwipe();
+            // editor上かスマホかで挙動を変える
+            if (Application.isEditor)
+            {
+                PlayerMoveOnEditor();
+            }
+            else
+            {
+                TouchSwipe();
+            }
         }
     }
 
@@ -53,7 +65,7 @@ public class SwipeController : MonoBehaviour
     GameObject m_jumpButton = null;
 
     /// <summary> Joystick </summary>
-    [Header("JoyStick") ,SerializeField] FixedJoystick m_fixedJoystick = null;
+    FixedJoystick m_fixedJoystick;
 
     /// <summary>
     /// スマホ画面のタッチでの視点移動+Playerの移動
@@ -141,12 +153,14 @@ public class SwipeController : MonoBehaviour
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             m_rb.velocity = new Vector3(0f, m_rb.velocity.y, 0f);
+            m_playerAnimator.SetInteger("Walk", 0);
         }
         else
         {
             Vector3 velo = dir.normalized * m_movingSpeed; // 入力した方向に移動する
             velo.y = m_rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             m_rb.velocity = velo;   // 計算した速度ベクトルをセットする
+            m_playerAnimator.SetInteger("Walk", 1);
         }
 
         // ジャンプの入力を取得しジャンプする
@@ -177,23 +191,22 @@ public class SwipeController : MonoBehaviour
         if (isJump)
         {
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
+            m_playerAnimator.SetTrigger("jump");
+            m_audioSource.PlayOneShot(m_flySE);
         }
         isJump = false;
     }
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Object")
-        {
-            isJump = true;
-        }
-        if (col.gameObject.tag == "FixedObject")
+        if (col.gameObject.tag == "Object" || col.gameObject.tag == "FixedObject")
         {
             isJump = true;
         }
         if (col.gameObject.tag == "FallPos")
         {
             this.transform.position = m_startPos;
+            this.transform.localEulerAngles = new Vector3(0, 90, 0);
         }
 
         if (col.gameObject.tag == "Goal")

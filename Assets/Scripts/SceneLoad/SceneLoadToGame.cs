@@ -9,6 +9,6 @@ public class SceneLoadToGame : MonoBehaviour
     /// </summary>
     public void OnClickStart()
     {
-        FadeManager.Instance.LoadScene("GameScene", 1.0f);
+        FadeManager.Instance.LoadScene("WaitingPlayerScene", 1.0f);
     }
 }
