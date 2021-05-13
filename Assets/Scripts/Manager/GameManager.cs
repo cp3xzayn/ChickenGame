@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_canvas = null;
     /// <summary> 生成するJumpButton </summary>
     [Header("Jumpボタン"), SerializeField] GameObject m_jumpButton = null;
-
+    /// <summary> Playerを生成するポジション </summary>
     [SerializeField] Transform m_spawnPos = null;
 
     /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>

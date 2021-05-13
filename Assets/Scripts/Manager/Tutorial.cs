@@ -31,8 +31,9 @@ public class Tutorial : MonoBehaviour
     [SerializeField] GameObject m_endPointer = null;
     /// <summary> 設定画面を開くボタンを示すPointer </summary>
     [SerializeField] GameObject m_settingPointer = null;
-
+    /// <summary> ManagerがアタッチされているGameObject </summary>
     [SerializeField] GameObject m_managers = null;
+    /// <summary> ObjMoveManager </summary>
     ObjMoveManager m_objMoveManager;
 
 

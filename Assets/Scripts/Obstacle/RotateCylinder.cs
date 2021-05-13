@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RotateCylinder : MonoBehaviour
 {
+    /// <summary> 回転のスピード </summary>
     [SerializeField] float m_turnSpeed = 120f;
 
     void Update()
