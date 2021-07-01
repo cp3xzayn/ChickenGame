@@ -8,8 +8,11 @@ using System.IO;
 /// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
-    /// <summary>テキストファイルの名前をSettingとする</summary>
-    static string m_textName = "SettingData";
+    //Singleton にする
+
+    /// <summary>SettingDataのファイル名</summary>
+    static string m_settingFileName = "SettingData";
+    static string m_buttonDataFileName = "ButtonData";
 
     /// <summary> ゲーム起動後最初に呼び出す </summary>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -19,14 +22,25 @@ public class PlayerSettingManager : MonoBehaviour
         var settingCanvas = GameObject.Instantiate(Resources.Load("SettingCanvas"));
         GameObject.DontDestroyOnLoad(settingCanvas);
         //データがなかったら作成する
-        if (!File.Exists(FileManager.GetFilePath(m_textName)))
+        if (!File.Exists(FileManager.GetFilePath(m_settingFileName)))
         {
             // 設定のデータを初期化しJsonファイルを作成する
-            SettingData m_settingData = new SettingData();
-            FileManager.TextSave(m_textName, JsonUtility.ToJson(m_settingData));
+            SettingData settingData = new SettingData();
+            FileManager.TextSave(PlayerSettingManager.m_settingFileName, JsonUtility.ToJson(settingData));
+        }
+
+        if (!File.Exists(FileManager.GetFilePath(m_buttonDataFileName)))
+        {
+            // 設定のデータを初期化しJsonファイルを作成する
+            ButtonData buttonData = new ButtonData();
+            FileManager.TextSave(PlayerSettingManager.m_buttonDataFileName, JsonUtility.ToJson(buttonData));
         }
     }
 
+    /// <summary> PlayerSettingPanel </summary>
+    [SerializeField] GameObject m_playerSettingPanel = null;
+    /// <summary> ButtonSettingPanel </summary>
+    [SerializeField] GameObject m_buttonSettingPanel = null;
     /// <summary> 水平感度設定のためのSlider </summary>
     [SerializeField] Slider m_hSensitivitySlider = null;
     /// <summary> 垂直感度設定のためのSlider </summary>
@@ -40,29 +54,45 @@ public class PlayerSettingManager : MonoBehaviour
     /// <summary> AudioSource </summary>
     [SerializeField] AudioSource m_audioSource = null;
 
-    void Start()
+    [SerializeField] Button m_jumpButton = null;
+
+    void Awake()
     {
         m_audioSource = GetComponent<AudioSource>();
-        Debug.Log(FileManager.GetFilePath(m_textName));
+        //Debug.Log(FileManager.GetFilePath(m_settingFileName));
+        Debug.Log(FileManager.GetFilePath(m_buttonDataFileName));
         
         // Sliedrのvalue、ToggleのOnOffを初期化する
-        m_hSensitivitySlider.value = LoadSetting.m_xSensitivity;
-        m_vSensitivitySlider.value = LoadSetting.m_ySensitivity;
-        m_bGMVolumeSlider.value = LoadSetting.m_bGMVolume;
-        m_sEVolumeSlider.value = LoadSetting.m_sEVolume;
-        m_tutorialToggle.isOn = LoadSetting.isTutorial;
+        m_hSensitivitySlider.value = LoadPlayerSetting.m_xSensitivity;
+        m_vSensitivitySlider.value = LoadPlayerSetting.m_ySensitivity;
+        m_bGMVolumeSlider.value = LoadPlayerSetting.m_bGMVolume;
+        m_sEVolumeSlider.value = LoadPlayerSetting.m_sEVolume;
+        m_tutorialToggle.isOn = LoadPlayerSetting.isTutorial;
+
     }
 
 
     /// <summary>
-    /// 設定データをロードし返す
+    /// PlayerSettingの設定データをロードし返す
     /// </summary>
-    public SettingData LoadSetting
+    public SettingData LoadPlayerSetting
     {
         get
         {
-            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_textName));
+            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_settingFileName));
             return settingData;
+        }
+    }
+
+    /// <summary>
+    /// ButtonDataの設定をロードし返す
+    /// </summary>
+    public ButtonData LoadButtonSetting
+    {
+        get
+        {
+            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad(m_buttonDataFileName));
+            return buttonData;
         }
     }
 
@@ -101,6 +131,28 @@ public class PlayerSettingManager : MonoBehaviour
     }
 
     /// <summary>
+    /// ButtonSetting画面に遷移する時の処理
+    /// </summary>
+    public void OnClickButtonSetting()
+    {
+        //PlayerSettingPanelをオフにする
+        SetActiveChange(m_playerSettingPanel, false);
+        //ButtonSettingPanelをオンにする
+        SetActiveChange(m_buttonSettingPanel, true);
+    }
+
+    /// <summary>
+    /// PlayerSetting画面に戻る時の処理
+    /// </summary>
+    public void OnClickPlayerSetting()
+    {
+        //PlayerSettingPanelをオフにする
+        SetActiveChange(m_playerSettingPanel, true);
+        //ButtonSettingPanelをオンにする
+        SetActiveChange(m_buttonSettingPanel, false);
+    }
+
+    /// <summary>
     /// 設定画面が閉じられた時
     /// </summary>
     public void OnClickCloseSetting()
@@ -114,7 +166,12 @@ public class PlayerSettingManager : MonoBehaviour
     public void SaveSettingData(SettingData settingData)
     {
         Debug.Log("$ファイルに設定データを保存しました。");
-        FileManager.TextSave(m_textName, JsonUtility.ToJson(settingData));
+        FileManager.TextSave(m_settingFileName, JsonUtility.ToJson(settingData));
+    }
+
+    void SetActiveChange(GameObject ui, bool onoff)
+    {
+        ui.SetActive(onoff);
     }
 }
 
@@ -136,3 +193,15 @@ public class SettingData
     /// <summary> チュートリアルの説明のOnOffを決めます </summary>
     public bool isTutorial = true;
 }
+
+
+/// <summary>
+/// Buttonのパラメータデータ（Json）
+/// </summary>
+[Serializable]
+public class ButtonData
+{
+    public Vector2 m_buttonPos = new Vector2(-150, 150);
+    public Vector2 m_buttonScale = new Vector2(150, 150);
+}
+
