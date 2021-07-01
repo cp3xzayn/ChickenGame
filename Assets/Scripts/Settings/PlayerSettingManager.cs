@@ -8,6 +8,15 @@ using System.IO;
 /// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
+    private static PlayerSettingManager instance;
+    public static PlayerSettingManager Instance => instance;
+
+    private PlayerSettingManager()
+    {
+
+    }
+
+
     /// <summary>SettingDataのファイル名</summary>
     static string m_settingFileName = "SettingData";
     /// <summary> ButtonDataのファイル名 </summary>
@@ -73,12 +82,14 @@ public class PlayerSettingManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// ButtonDataをロードし返す
+    /// </summary>
     public ButtonData LoadButtonSetting
     {
         get
         {
-            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad(m_buttonFileName));
+            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad("ButtonData"));
             return buttonData;
         }
     }

@@ -144,6 +144,8 @@ public class GameManager : MonoBehaviour
     /// <summary> Playerを生成するポジション </summary>
     [SerializeField] Transform m_spawnPos = null;
 
+
+
     /// <summary> GameStateがCountDownPlayingになったときの処理 </summary>
     void OnCountDownState()
     {
@@ -153,8 +155,9 @@ public class GameManager : MonoBehaviour
         CameraSetting(m_prepareCamera, false);
         // JumpButtonを生成する
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
-        m_rectTransform.localPosition = ButtonSetting.ButtonPos;
         jumpButton.transform.SetParent(m_canvas.transform, false);
+
+        m_rectTransform.localPosition = ButtonSetting.ButtonPos;
 
         StartCoroutine(CountDown());
     }
