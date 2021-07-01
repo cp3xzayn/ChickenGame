@@ -8,8 +8,10 @@ using System.IO;
 /// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
-    /// <summary>テキストファイルの名前をSettingとする</summary>
-    static string m_textName = "SettingData";
+    /// <summary>SettingDataのファイル名</summary>
+    static string m_settingFileName = "SettingData";
+    /// <summary> ButtonDataのファイル名 </summary>
+    static string m_buttonFileName = "ButtonData";
 
     /// <summary> ゲーム起動後最初に呼び出す </summary>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -19,11 +21,16 @@ public class PlayerSettingManager : MonoBehaviour
         var settingCanvas = GameObject.Instantiate(Resources.Load("SettingCanvas"));
         GameObject.DontDestroyOnLoad(settingCanvas);
         //データがなかったら作成する
-        if (!File.Exists(FileManager.GetFilePath(m_textName)))
+        if (!File.Exists(FileManager.GetFilePath(m_settingFileName)))
         {
             // 設定のデータを初期化しJsonファイルを作成する
-            SettingData m_settingData = new SettingData();
-            FileManager.TextSave(m_textName, JsonUtility.ToJson(m_settingData));
+            SettingData settingData = new SettingData();
+            FileManager.TextSave(m_settingFileName, JsonUtility.ToJson(settingData));
+        }
+        if (!File.Exists(FileManager.GetFilePath(m_buttonFileName)))
+        {
+            ButtonData buttonData = new ButtonData();
+            FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
         }
     }
 
@@ -43,26 +50,36 @@ public class PlayerSettingManager : MonoBehaviour
     void Start()
     {
         m_audioSource = GetComponent<AudioSource>();
-        Debug.Log(FileManager.GetFilePath(m_textName));
+        Debug.Log(FileManager.GetFilePath(m_settingFileName));
         
         // Sliedrのvalue、ToggleのOnOffを初期化する
-        m_hSensitivitySlider.value = LoadSetting.m_xSensitivity;
-        m_vSensitivitySlider.value = LoadSetting.m_ySensitivity;
-        m_bGMVolumeSlider.value = LoadSetting.m_bGMVolume;
-        m_sEVolumeSlider.value = LoadSetting.m_sEVolume;
-        m_tutorialToggle.isOn = LoadSetting.isTutorial;
+        m_hSensitivitySlider.value = LoadPlayerSetting.m_xSensitivity;
+        m_vSensitivitySlider.value = LoadPlayerSetting.m_ySensitivity;
+        m_bGMVolumeSlider.value = LoadPlayerSetting.m_bGMVolume;
+        m_sEVolumeSlider.value = LoadPlayerSetting.m_sEVolume;
+        m_tutorialToggle.isOn = LoadPlayerSetting.isTutorial;
     }
 
 
     /// <summary>
     /// 設定データをロードし返す
     /// </summary>
-    public SettingData LoadSetting
+    public SettingData LoadPlayerSetting
     {
         get
         {
-            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_textName));
+            SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_settingFileName));
             return settingData;
+        }
+    }
+
+
+    public ButtonData LoadButtonSetting
+    {
+        get
+        {
+            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad(m_buttonFileName));
+            return buttonData;
         }
     }
 
@@ -109,12 +126,30 @@ public class PlayerSettingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 設定をセーブする
+    /// ButtonSetting画面が閉じられた時
+    /// </summary>
+    public void OnClickButtonSetting()
+    {
+        SaveButtonData(ButtonSetting.m_buttonData);
+    }
+
+    /// <summary>
+    /// PlayerSettingをセーブする
     /// </summary>
     public void SaveSettingData(SettingData settingData)
     {
-        Debug.Log("$ファイルに設定データを保存しました。");
-        FileManager.TextSave(m_textName, JsonUtility.ToJson(settingData));
+        Debug.Log("$ファイルにPlayerSettingを保存しました。");
+        FileManager.TextSave(m_settingFileName, JsonUtility.ToJson(settingData));
+    }
+
+    /// <summary>
+    /// ButtonSettingをセーブする
+    /// </summary>
+    /// <param name="buttonData"></param>
+    public void SaveButtonData(ButtonData buttonData)
+    {
+        Debug.Log("ファイルにButtonDataを保存しました。");
+        FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
     }
 }
 
@@ -135,4 +170,15 @@ public class SettingData
     public float m_sEVolume = 0.1f;
     /// <summary> チュートリアルの説明のOnOffを決めます </summary>
     public bool isTutorial = true;
+}
+
+
+/// <summary>
+/// Buttonのポジション、サイズの設定データ
+/// </summary>
+[Serializable]
+public class ButtonData
+{
+    public Vector2 m_buttonPos = new Vector2(-150, 150);
+    public Vector2 m_buttonSize = new Vector2(150, 150);
 }

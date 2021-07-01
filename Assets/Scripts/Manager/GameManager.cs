@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         SetNowState(GameState.Start); // 初期化
         m_player = Resources.Load<GameObject>("Player/" + SelectCharaInfo.CharaName);
+        m_rectTransform = m_jumpButton.GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_canvas = null;
     /// <summary> 生成するJumpButton </summary>
     [Header("Jumpボタン"), SerializeField] GameObject m_jumpButton = null;
+
+    RectTransform m_rectTransform;
     /// <summary> Playerを生成するポジション </summary>
     [SerializeField] Transform m_spawnPos = null;
 
@@ -146,11 +149,11 @@ public class GameManager : MonoBehaviour
     {
         // Playerを生成し、正面を向ける
         Instantiate(m_player, m_spawnPos.position, Quaternion.Euler(0, 90, 0));
-
         m_joystick.SetActive(true);
         CameraSetting(m_prepareCamera, false);
         // JumpButtonを生成する
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
+        m_rectTransform.localPosition = ButtonSetting.ButtonPos;
         jumpButton.transform.SetParent(m_canvas.transform, false);
 
         StartCoroutine(CountDown());
