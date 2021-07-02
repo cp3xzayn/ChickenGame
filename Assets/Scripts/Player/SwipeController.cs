@@ -33,6 +33,7 @@ public class SwipeController : MonoBehaviour
         m_fixedJoystick = FindObjectOfType<FixedJoystick>();
         // JumpButtonを取得し、Jump()を登録する
         m_jumpButton = GameObject.FindWithTag("JumpButton");
+        Debug.Log(m_jumpButton);
         Button m_jump = m_jumpButton.GetComponent<Button>();
         m_jump.onClick.AddListener(() => Jump());
     }
@@ -190,6 +191,7 @@ public class SwipeController : MonoBehaviour
         // 接地している場合はジャンプする
         if (isJump)
         {
+            Debug.Log("Jump");
             m_rb.AddForce(Vector3.up * m_jumpPower, ForceMode.Impulse);
             m_playerAnimator.SetTrigger("jump");
             m_audioSource.PlayOneShot(m_flySE);

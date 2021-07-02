@@ -3236,8 +3236,8 @@ GameObject:
   - component: {fileID: 7609201206630026609}
   - component: {fileID: 7609201206630026608}
   m_Layer: 5
-  m_Name: JumpButton
-  m_TagString: JumpButton
+  m_Name: Button(Jump)
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

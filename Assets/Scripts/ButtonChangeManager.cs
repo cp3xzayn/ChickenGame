@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 
+/// <summary>
+/// Buttonのデータの反映、処理を行うクラス
+/// </summary>
 public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     /// <summary> ButtonDataのファイル名 </summary>
@@ -32,6 +35,7 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
     }
 
+    // 今後修正必要
     /// <summary> Buttonの配列 </summary>
     [SerializeField] GameObject[] m_buttons = null;
     /// <summary> 選択されたButtonのGameObject </summary>
@@ -40,6 +44,8 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     RectTransform m_rtSelectedButton;
     /// <summary> 移動するButtonのRectTransform </summary>
     [SerializeField] RectTransform m_rtMoveButton = null;
+
+
     /// <summary> 2本目の指が押されたときの距離 </summary>
     float m_backDistance;
 
@@ -55,6 +61,7 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Start()
     {
+        // 保存されたデータを取得し、前回設定したButtonの設定を反映する
         m_rtMoveButton.localPosition = LoadButtonSetting.m_buttonPos;
         m_rtMoveButton.sizeDelta = LoadButtonSetting.m_buttonSize;
 
@@ -207,8 +214,20 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     void SetButtonData()
     {
         Debug.Log("ButtonSettingにデータをセットしました。");
+        
         ButtonSetting.ButtonPos = new Vector2(m_rtSelectedButton.localPosition.x, m_rtSelectedButton.localPosition.y);
         ButtonSetting.ButtonSize = new Vector2(m_rtSelectedButton.sizeDelta.x, m_rtSelectedButton.sizeDelta.y);
+        Debug.Log("setbuttondata" + ButtonSetting.ButtonPos);
     }
 
+}
+
+/// <summary>
+/// Buttonのポジション、サイズの設定データ
+/// </summary>
+[Serializable]
+public class ButtonData
+{
+    public Vector2 m_buttonPos = new Vector2(650, -210);
+    public Vector2 m_buttonSize = new Vector2(150, 150);
 }

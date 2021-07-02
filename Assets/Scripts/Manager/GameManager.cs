@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
         SetNowState(GameState.Start); // 初期化
         m_player = Resources.Load<GameObject>("Player/" + SelectCharaInfo.CharaName);
-        m_rectTransform = m_jumpButton.GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -156,8 +155,10 @@ public class GameManager : MonoBehaviour
         // JumpButtonを生成する
         GameObject jumpButton = Instantiate(m_jumpButton) as GameObject;
         jumpButton.transform.SetParent(m_canvas.transform, false);
-
+        // JumpButtonのRectTransformを設定する
+        m_rectTransform = jumpButton.GetComponent<RectTransform>();
         m_rectTransform.localPosition = ButtonSetting.ButtonPos;
+        m_rectTransform.sizeDelta = ButtonSetting.ButtonSize;
 
         StartCoroutine(CountDown());
     }

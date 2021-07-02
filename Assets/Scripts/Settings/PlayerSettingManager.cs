@@ -4,7 +4,7 @@ using System;
 using System.IO;
 
 /// <summary>
-/// 感度や音量などの設定を管理するクラス
+/// 感度や音量などの設定を反映、管理するクラス
 /// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
@@ -52,7 +52,7 @@ public class PlayerSettingManager : MonoBehaviour
     void Start()
     {
         m_audioSource = GetComponent<AudioSource>();
-        Debug.Log(FileManager.GetFilePath(m_settingFileName));
+      //  Debug.Log(FileManager.GetFilePath(m_settingFileName));
         
         // Sliedrのvalue、ToggleのOnOffを初期化する
         m_hSensitivitySlider.value = LoadPlayerSetting.m_xSensitivity;
@@ -145,15 +145,4 @@ public class SettingData
     public float m_sEVolume = 0.1f;
     /// <summary> チュートリアルの説明のOnOffを決めます </summary>
     public bool isTutorial = true;
-}
-
-
-/// <summary>
-/// Buttonのポジション、サイズの設定データ
-/// </summary>
-[Serializable]
-public class ButtonData
-{
-    public Vector2 m_buttonPos = new Vector2(-150, 150);
-    public Vector2 m_buttonSize = new Vector2(150, 150);
 }
