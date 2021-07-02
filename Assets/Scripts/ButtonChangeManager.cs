@@ -1,15 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
+using System.IO;
 
 public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    /// <summary> ButtonDataのファイル名 </summary>
+    static string m_buttonFileName = "ButtonData";
+
+    /// <summary> ゲーム起動後最初に呼び出す </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void InitializeBeforeSceneLoad()
+    {
+        if (!File.Exists(FileManager.GetFilePath(m_buttonFileName)))
+        {
+            ButtonData buttonData = new ButtonData();
+            FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
+        }
+    }
+
+    /// <summary>
+    /// ButtonDataをロードし返す
+    /// </summary>
+    public ButtonData LoadButtonSetting
+    {
+        get
+        {
+            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad("ButtonData"));
+            return buttonData;
+        }
+    }
+
     /// <summary> Buttonの配列 </summary>
     [SerializeField] GameObject[] m_buttons = null;
     /// <summary> 選択されたButtonのGameObject </summary>
     GameObject m_selectedButton = null;
     /// <summary> 選択されたボタンのRectTransform </summary>
-    RectTransform m_rectTransform;
+    RectTransform m_rtSelectedButton;
+    /// <summary> 移動するButtonのRectTransform </summary>
+    [SerializeField] RectTransform m_rtMoveButton = null;
     /// <summary> 2本目の指が押されたときの距離 </summary>
     float m_backDistance;
 
@@ -25,6 +55,9 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     void Start()
     {
+        m_rtMoveButton.localPosition = LoadButtonSetting.m_buttonPos;
+        m_rtMoveButton.sizeDelta = LoadButtonSetting.m_buttonSize;
+
         for (int i = 0; i < m_buttons.Length; i++)
         {
             int value = i; //キャプチャーのため、変数に格納する
@@ -52,9 +85,9 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         Debug.Log("Button選択");
         m_selectedButton = m_buttons[value];
-        m_rectTransform = m_selectedButton.GetComponent<RectTransform>();
-        m_defaultScaleX = m_rectTransform.sizeDelta.x;
-        m_defaultScaleY = m_rectTransform.sizeDelta.y;
+        m_rtSelectedButton = m_selectedButton.GetComponent<RectTransform>();
+        m_defaultScaleX = m_rtSelectedButton.sizeDelta.x;
+        m_defaultScaleY = m_rtSelectedButton.sizeDelta.y;
     }
 
     /// <summary>
@@ -99,7 +132,7 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     /// <param name="yScale"></param>
     void UpdateScaling(float xScale, float yScale)
     {
-        m_rectTransform.sizeDelta = new Vector2(xScale, yScale);
+        m_rtSelectedButton.sizeDelta = new Vector2(xScale, yScale);
     }
 
     /// <summary>
@@ -140,20 +173,42 @@ public class ButtonChangeManager : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
     }
 
+    /// <summary>
+    /// ドラッグ終了時に呼ばれる処理
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
         SetButtonData();
     }
 
+
+    /// <summary>
+    /// ButtonSetting画面が閉じられた時
+    /// </summary>
+    public void OnCloseButtonSetting()
+    {
+        SaveButtonData(ButtonSetting.m_buttonData);
+    }
+
+    /// <summary>
+    /// ButtonSettingをセーブする
+    /// </summary>
+    /// <param name="buttonData"></param>
+    public void SaveButtonData(ButtonData buttonData)
+    {
+        Debug.Log("ファイルにButtonDataを保存しました。");
+        FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
+    }
+
     /// <summary>
     /// ButtonSettingにButtonの情報をセットする
     /// </summary>
-    /// <param name="tra"></param>
     void SetButtonData()
     {
         Debug.Log("ButtonSettingにデータをセットしました。");
-        ButtonSetting.ButtonPos = new Vector2(m_rectTransform.localPosition.x, m_rectTransform.localPosition.y);
-        ButtonSetting.ButtonSize = new Vector2(m_rectTransform.sizeDelta.x, m_rectTransform.sizeDelta.y);
+        ButtonSetting.ButtonPos = new Vector2(m_rtSelectedButton.localPosition.x, m_rtSelectedButton.localPosition.y);
+        ButtonSetting.ButtonSize = new Vector2(m_rtSelectedButton.sizeDelta.x, m_rtSelectedButton.sizeDelta.y);
     }
 
 }

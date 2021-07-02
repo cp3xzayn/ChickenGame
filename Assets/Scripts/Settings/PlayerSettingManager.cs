@@ -8,19 +8,17 @@ using System.IO;
 /// </summary>
 public class PlayerSettingManager : MonoBehaviour
 {
-    private static PlayerSettingManager instance;
-    public static PlayerSettingManager Instance => instance;
+    //private static PlayerSettingManager instance;
+    //public static PlayerSettingManager Instance => instance;
 
-    private PlayerSettingManager()
-    {
+    //private PlayerSettingManager()
+    //{
 
-    }
+    //}
 
 
     /// <summary>SettingDataのファイル名</summary>
     static string m_settingFileName = "SettingData";
-    /// <summary> ButtonDataのファイル名 </summary>
-    static string m_buttonFileName = "ButtonData";
 
     /// <summary> ゲーム起動後最初に呼び出す </summary>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -35,11 +33,6 @@ public class PlayerSettingManager : MonoBehaviour
             // 設定のデータを初期化しJsonファイルを作成する
             SettingData settingData = new SettingData();
             FileManager.TextSave(m_settingFileName, JsonUtility.ToJson(settingData));
-        }
-        if (!File.Exists(FileManager.GetFilePath(m_buttonFileName)))
-        {
-            ButtonData buttonData = new ButtonData();
-            FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
         }
     }
 
@@ -79,18 +72,6 @@ public class PlayerSettingManager : MonoBehaviour
         {
             SettingData settingData = JsonUtility.FromJson<SettingData>(FileManager.TextLoad(m_settingFileName));
             return settingData;
-        }
-    }
-
-    /// <summary>
-    /// ButtonDataをロードし返す
-    /// </summary>
-    public ButtonData LoadButtonSetting
-    {
-        get
-        {
-            ButtonData buttonData = JsonUtility.FromJson<ButtonData>(FileManager.TextLoad("ButtonData"));
-            return buttonData;
         }
     }
 
@@ -136,13 +117,6 @@ public class PlayerSettingManager : MonoBehaviour
         SaveSettingData(PlayerSetting.m_settingData);
     }
 
-    /// <summary>
-    /// ButtonSetting画面が閉じられた時
-    /// </summary>
-    public void OnClickButtonSetting()
-    {
-        SaveButtonData(ButtonSetting.m_buttonData);
-    }
 
     /// <summary>
     /// PlayerSettingをセーブする
@@ -151,16 +125,6 @@ public class PlayerSettingManager : MonoBehaviour
     {
         Debug.Log("$ファイルにPlayerSettingを保存しました。");
         FileManager.TextSave(m_settingFileName, JsonUtility.ToJson(settingData));
-    }
-
-    /// <summary>
-    /// ButtonSettingをセーブする
-    /// </summary>
-    /// <param name="buttonData"></param>
-    public void SaveButtonData(ButtonData buttonData)
-    {
-        Debug.Log("ファイルにButtonDataを保存しました。");
-        FileManager.TextSave(m_buttonFileName, JsonUtility.ToJson(buttonData));
     }
 }
 

@@ -2329,6 +2329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_buttons:
   - {fileID: 7609201206630026622}
+  m_rtMoveButton: {fileID: 7609201206630026623}
 --- !u!1 &4393995940169442229
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,8 +2471,8 @@ MonoBehaviour:
           m_StringArgument: ZoomIn
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 517193635968932000}
-        m_MethodName: OnClickButtonSetting
+      - m_Target: {fileID: 1978116690545038955}
+        m_MethodName: OnCloseButtonSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
