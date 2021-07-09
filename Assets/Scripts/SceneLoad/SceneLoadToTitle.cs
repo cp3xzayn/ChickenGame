@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class SceneLoadToTitle : MonoBehaviour
+public class SceneLoadToTitle : ButtonAnimationInterface
 {
     /// <summary>
-    /// Titleに戻るボタンが押されたとき
+    /// Titlteに戻るボタンが押されたときの処理
     /// </summary>
-    public void OnClickToTitile()
+    /// <param name="pointerEventData"></param>
+    public override void OnPointerDown(PointerEventData pointerEventData)
     {
+        base.OnPointerDown(pointerEventData);
         FadeManager.Instance.LoadScene("Title", 1.0f);
     }
 }

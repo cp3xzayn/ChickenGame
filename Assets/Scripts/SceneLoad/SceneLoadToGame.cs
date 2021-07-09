@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class SceneLoadToGame : MonoBehaviour
+public class SceneLoadToGame : ButtonAnimationInterface
 {
     /// <summary>
-    /// ゲームスタートボタンが押されたときの処理
+    /// ゲームスタートが押されたときの処理
     /// </summary>
-    public void OnClickStart()
+    /// <param name="pointerEventData"></param>
+    public override void OnPointerDown(PointerEventData pointerEventData)
     {
+        base.OnPointerDown(pointerEventData);
         FadeManager.Instance.LoadScene("WaitingPlayerScene", 1.0f);
     }
 }

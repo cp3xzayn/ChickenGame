@@ -21,7 +21,9 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    private static GameManager instance;
+
+    public static GameManager Instance => instance;
 
     /// <summary> 現在のGameState </summary>
     private GameState m_nowGameState;
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        instance = this;
         SetNowState(GameState.Start); // 初期化
         m_player = Resources.Load<GameObject>("Player/" + SelectCharaInfo.CharaName);
     }

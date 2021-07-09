@@ -208,6 +208,10 @@ public class ObjMoveManager : MonoBehaviour
             m_nowSetPhase = SetPhase.YZSet;
         }
     }
+
+    /// <summary>
+    /// SetPhaseがEndになった時の処理
+    /// </summary>
     public void OnClickEndPhase()
     {
         if (m_nowSetPhase != SetPhase.Tutorial)
